@@ -1,0 +1,24 @@
+site_name: U-Net Brain Tumor segmentation
+nav:
+  - Home: index.md
+  - DataLoader: dataloader.md
+  - Encoder: encoder.md
+  - Decoder: decoder.md
+  - U-Net: UNet.md
+  - DiceLoss: DiceLoss.md
+  - FocalLoss: FocalLoss.md
+  - JaccardLoss: JaccardLoss.md
+  - TverskyLoss: TverskyLoss.md
+  - DiceBCELoss: DiceBCELoss.md
+  - ComboLoss: ComboLoss.md
+  - Trainer: trainer.md
+  - Charts: Charts.md
+  - CLI: CLI.md
+  - Custom Modules: CustomModules.md
+
+theme: readthedocs
+plugins:
+  - mkdocstrings
+
+extra_css:
+  - css/custom.css
