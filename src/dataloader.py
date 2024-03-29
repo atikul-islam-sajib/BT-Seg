@@ -16,6 +16,36 @@ from config import RAW_PATH, PROCESSED_PATH
 
 
 class Loader(Dataset):
+    """
+    Loader class that handles the loading, preprocessing, splitting, and normalization
+    of image and mask datasets for neural network training.
+
+    Parameters:
+    - image_path (str): Path to the zip file containing the images.
+    - image_size (int): Target size to which the images should be resized.
+    - batch_size (int): Number of images and masks in each batch of data.
+    - split_ratio (float): Ratio of the dataset to be used as test set.
+
+    Methods:
+    - unzip_folder(): Extracts images from a zip file to a specified directory.
+    - base_transformation(): Applies basic transformations to images.
+    - mask_transformation(): Applies transformations to mask images.
+    - split_dataset(images, masks): Splits the dataset into training and testing sets.
+    - create_dataloader(): Prepares DataLoader objects for training and testing datasets.
+    - details_dataset(): Prints details about the dataset.
+    - data_normalized(data): Normalizes a given dataset.
+    - display_images(): Displays images and their corresponding masks from the dataset.
+
+    Examples:
+    >>> loader = Loader(image_path="path/to/zip", image_size=128, batch_size=4, split_ratio=0.3)
+    >>> loader.unzip_folder()
+    >>> dataloader = loader.create_dataloader()
+
+    Notes:
+    - Ensure RAW_PATH and PROCESSED_PATH are correctly configured in your config file.
+    - This class requires the 'torch', 'torchvision', 'PIL', and 'cv2' libraries.
+    """
+
     def __init__(self, image_path=None, image_size=128, batch_size=4, split_ratio=0.30):
         self.image_path = image_path
         self.batch_size = batch_size
@@ -26,6 +56,12 @@ class Loader(Dataset):
         self.masks = list()
 
     def unzip_folder(self):
+        """
+        Extracts images and masks from a zip file to the RAW_PATH directory.
+
+        Raises:
+        - Exception: If the raw data folder does not exist.
+        """
         if os.path.exists(RAW_PATH):
             with zipfile.ZipFile(self.image_path, "r") as zip_ref:
                 zip_ref.extractall(os.path.join(RAW_PATH, "segmented"))
@@ -33,6 +69,12 @@ class Loader(Dataset):
             raise Exception("Raw data folder does not exist".capitalize())
 
     def base_transformation(self):
+        """
+        Applies basic transformations to the images.
+
+        Returns:
+        - torchvision.transforms.Compose: A composition of image transformations.
+        """
         return transforms.Compose(
             [
                 transforms.Resize((self.image_size, self.image_size)),
@@ -42,6 +84,12 @@ class Loader(Dataset):
         )
 
     def mask_transformation(self):
+        """
+        Applies transformations to the mask images.
+
+        Returns:
+        - torchvision.transforms.Compose: A composition of mask transformations.
+        """
         return transforms.Compose(
             [
                 transforms.Resize((self.image_size, self.image_size)),
@@ -52,6 +100,16 @@ class Loader(Dataset):
         )
 
     def split_dataset(self, **kwargs):
+        """
+        Splits the images and masks into training and testing sets.
+
+        Parameters:
+        - images (list): A list of image tensors.
+        - masks (list): A list of mask tensors.
+
+        Returns:
+        - tuple: A tuple containing split datasets (train_images, test_images, train_masks, test_masks).
+        """
         images = kwargs["images"]
         masks = kwargs["masks"]
 
@@ -60,6 +118,15 @@ class Loader(Dataset):
         )
 
     def create_dataloader(self):
+        """
+        Creates DataLoader objects for the dataset.
+
+        Returns:
+        - DataLoader: DataLoader object containing the entire dataset.
+
+        Raises:
+        - Exception: If the processed data folder does not exist.
+        """
         images = os.listdir(os.path.join(RAW_PATH, "segmented"))[0]
         masks = os.listdir(os.path.join(RAW_PATH, "segmented"))[1]
 
@@ -130,6 +197,12 @@ class Loader(Dataset):
 
     @staticmethod
     def details_dataset():
+        """
+        Prints details about the dataset, including the total number of images and masks, and their shapes.
+
+        Raises:
+        - Exception: If the processed data folder does not exist.
+        """
         if os.path.exists(PROCESSED_PATH):
 
             dataloader = load(os.path.join(PROCESSED_PATH, "dataloader.pkl"))
@@ -155,12 +228,27 @@ class Loader(Dataset):
 
     @staticmethod
     def data_normalized(**kwargs):
+        """
+        Normalizes the data by scaling pixel values to the range [0, 1].
+
+        Parameters:
+        - data (Tensor): The data to normalize.
+
+        Returns:
+        - Tensor: Normalized data.
+        """
         return (kwargs["data"] - kwargs["data"].min()) / (
             kwargs["data"].max() - kwargs["data"].min()
         )
 
     @staticmethod
     def display_images():
+        """
+        Displays a set of images and their corresponding masks from the dataset.
+
+        Raises:
+        - Exception: If the processed data folder does not exist.
+        """
         if os.path.exists(PROCESSED_PATH):
             dataloader = load(os.path.join(PROCESSED_PATH, "test_dataloader.pkl"))
             images, masks = next(iter(dataloader))
