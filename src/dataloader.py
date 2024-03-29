@@ -10,7 +10,6 @@ from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
 
-sys.path.append("src/")
 
 from utils import dump, load
 from config import RAW_PATH, PROCESSED_PATH
