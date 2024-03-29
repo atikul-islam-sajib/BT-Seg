@@ -278,6 +278,26 @@ class Loader(Dataset):
 
 
 if __name__ == "__main__":
+    """
+    Script to define and utilize the DataLoader for image segmentation tasks using U-Net.
+
+    This script initializes a DataLoader with specified parameters for processing
+    image datasets. It handles the extraction of images from a zip file, preprocessing,
+    splitting the dataset, and provides functionality to display dataset details and images.
+
+    Command Line Arguments:
+    - --image_path: Path to the zip file containing the images.
+    - --batch_size: Number of images and masks in each data batch.
+    - --split_ratio: Proportion of the dataset to be used as the test set.
+    - --image_size: Size (width and height in pixels) to which images should be resized.
+
+    Example:
+    python dataloader_script.py --image_path "/path/to/images.zip" --batch_size 4 --split_ratio 0.3 --image_size 128
+
+    Notes:
+    - Ensure that the paths specified in `config.py` for RAW_PATH and PROCESSED_PATH are valid and accessible.
+    - The script assumes that the images in the zip file are organized in a manner compatible with the Loader class's expectations.
+    """
     parser = argparse.ArgumentParser(
         description="Define the dataloader for UNet".title()
     )
