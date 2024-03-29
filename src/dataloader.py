@@ -1,14 +1,12 @@
-import sys
 import os
-import logging
 import argparse
 import zipfile
-from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, Dataset
-from torchvision import transforms
 from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, Dataset
+from torchvision import transforms
 
 
 from utils import dump, load
