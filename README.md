@@ -1,2 +1,10 @@
 # BT-Seg
-This repo will be used for segmentation task, based on Brain Tumor using U-Net architecture and several loss functions
+
+upload soon ...
+
+target:
+
+1. pypi file
+2. CLI
+3. Custom Modules
+4. Web app
