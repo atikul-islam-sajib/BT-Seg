@@ -10,7 +10,12 @@ from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
 
-sys.path.append("src/")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filemode="w",
+    filename="./logs/dataloader.log",
+)
 
 from utils import dump, load
 from config import RAW_PATH, PROCESSED_PATH
@@ -227,7 +232,7 @@ if __name__ == "__main__":
 
             dataloader = loader.create_dataloader()
 
-            Loader.details_dataset()
+            logging.info(Loader.details_dataset())
             Loader.display_images()
 
         else:
