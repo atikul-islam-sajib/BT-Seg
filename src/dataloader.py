@@ -190,3 +190,47 @@ class Loader(Dataset):
 
         else:
             raise Exception("Processed data folder does not exist".capitalize())
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Define the dataloader for UNet".title()
+    )
+
+    parser.add_argument(
+        "--image_path",
+        type=str,
+        help="Path to the zip file containing the images".capitalize(),
+    )
+    parser.add_argument(
+        "--batch_size", type=int, help="Batch size for the dataloader".capitalize()
+    )
+    parser.add_argument(
+        "--split_ratio", type=float, help="Split ratio for the dataset".capitalize()
+    )
+    parser.add_argument(
+        "--image_size", type=int, help="Image size for the dataloader".capitalize()
+    )
+
+    args = parser.parse_args()
+
+    if args.image_path:
+        if args.batch_size and args.split_ratio and args.image_size:
+            loader = Loader(
+                image_path=args.image_path,
+                batch_size=args.batch_size,
+                split_ratio=args.split_ratio,
+                image_size=args.image_size,
+            )
+
+            loader.unzip_folder()
+
+            dataloader = loader.create_dataloader()
+
+            Loader.details_dataset()
+            Loader.display_images()
+
+        else:
+            raise Exception("Missing arguments".capitalize())
+    else:
+        raise Exception("Missing arguments".capitalize())
