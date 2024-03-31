@@ -1,11 +1,7 @@
 import sys
-import os
-import logging
 import argparse
 import torch
 import torch.nn as nn
-
-sys.path.append("src/")
 
 from encoder import Encoder
 from decoder import Decoder
