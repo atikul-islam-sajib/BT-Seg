@@ -4,7 +4,9 @@ nav:
   - DataLoader: dataloader.md
   - Encoder: encoder.md
   - Decoder: decoder.md
+  - Attention-Block: attention_block.md
   - U-Net: UNet.md
+  - AttentionUNet: AttentionUNet.md
   - DiceLoss: DiceLoss.md
   - FocalLoss: FocalLoss.md
   - JaccardLoss: JaccardLoss.md
