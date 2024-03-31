@@ -4,25 +4,69 @@ import torch.nn as nn
 
 
 class FocalLoss(nn.Module):
-    def __init__(self, alpha=0.25, gamma=2):
-        super(FocalLoss, self).__init__()
+    """
+    Implements the Focal Loss function, designed to address class imbalance by down-weighting well-classified examples and focusing on hard, misclassified examples.
 
+    Attributes:
+    | Attribute | Type  | Description                                                         |
+    |-----------|-------|---------------------------------------------------------------------|
+    | alpha     | float | A balancing factor for the negative and positive classes.          |
+    | gamma     | float | A focusing parameter to adjust the rate at which easy examples are down-weighted. |
+
+    Methods:
+    - `forward(predicted, actual)`: Computes the Focal Loss between the predicted probabilities and actual binary labels.
+
+    Example usage:
+    ```python
+    focal_loss = FocalLoss(alpha=0.25, gamma=2.0)
+    predicted = torch.sigmoid(torch.randn(10, 1, requires_grad=True))
+    actual = torch.empty(10, 1).random_(2)
+    loss = focal_loss(predicted, actual)
+    loss.backward()
+    print(loss)
+    ```
+    """
+
+    def __init__(self, alpha=0.25, gamma=2):
+        """
+        Initializes the FocalLoss class with the alpha and gamma parameters.
+
+        | Parameter | Type  | Description                                                |
+        |-----------|-------|------------------------------------------------------------|
+        | alpha     | float | Weighting factor for the class labels. Default: 0.25.      |
+        | gamma     | float | Modulating factor to dynamically scale the loss. Default: 2. |
+        """
+        super(FocalLoss, self).__init__()
         self.alpha = alpha
         self.gamma = gamma
 
     def forward(self, predicted, actual):
+        """
+        Computes the Focal Loss between the predicted probabilities and the actual targets.
+
+        | Parameter  | Type         | Description                             |
+        |------------|--------------|-----------------------------------------|
+        | predicted  | torch.Tensor | The predicted probabilities.            |
+        | actual     | torch.Tensor | The actual targets.                     |
+
+        | Returns    | Type         | Description                             |
+        |------------|--------------|-----------------------------------------|
+        | torch.Tensor | torch.Tensor | The calculated Focal Loss.              |
+        """
         predicted = predicted.view(-1)
         actual = actual.view(-1)
 
-        criterion = nn.BCELoss()
-        BCE = criterion(predicted, actual)
-        pt = torch.exp(-BCE)
+        criterion = nn.BCELoss(reduction="none")
+        BCE_loss = criterion(predicted, actual)
+        pt = torch.exp(-BCE_loss)
 
-        return self.alpha * (1 - pt) ** self.gamma * criterion(predicted, actual)
+        focal_loss = self.alpha * (1 - pt) ** self.gamma * BCE_loss
+
+        return focal_loss.mean()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Focal Loss Example".title())
+    parser = argparse.ArgumentParser(description="Focal Loss Example")
     parser.add_argument(
         "--alpha", type=float, default=0.25, help="Alpha parameter for Focal Loss"
     )
@@ -32,15 +76,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.alpha and args.gamma:
-        focal_loss = FocalLoss(alpha=args.alpha, gamma=args.gamma)
+    focal_loss = FocalLoss(alpha=args.alpha, gamma=args.gamma)
 
-        predicted = torch.tensor([0.8, 0.6, 0.2])
-        actual = torch.tensor([1.0, 0.0, 0.0])
+    predicted = torch.tensor([0.8, 0.6, 0.2], dtype=torch.float32)
+    actual = torch.tensor([1.0, 0.0, 0.0], dtype=torch.float32)
 
-        loss = focal_loss(predicted, actual)
+    loss = focal_loss(predicted, actual)
 
-        print("Total loss using focal loss {}".format(loss))
-
-    else:
-        raise Exception("Arguments should be provided for alpha and gamma".capitalize())
+    print(f"Total loss using Focal Loss: {loss.item():.4f}")
