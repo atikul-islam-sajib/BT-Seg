@@ -391,6 +391,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "--gamma", type=float, default=2, help="Gamma value".capitalize()
     )
+    parser.add_argument("--l1", type=float, default=1e-2, help="L1 value".capitalize())
+    parser.add_argument("--l2", type=float, default=1e-2, help="L2 value".capitalize())
+    parser.add_argument(
+        "--weight_clip", type=str, default=False, help="Weight Clip".capitalize()
+    )
+    parser.add_argument(
+        "--min_clip", type=float, default=0.0, help="Min Clip".capitalize()
+    )
+    parser.add_argument(
+        "--max_clip", type=float, default=1.0, help="Max Clip".capitalize()
+    )
     parser.add_argument("--train", action="store_true", help="Train model".capitalize())
 
     args = parser.parse_args()
@@ -406,12 +417,22 @@ if __name__ == "__main__":
             and args.smooth_value
             and args.alpha
             and args.gamma
+            and args.l1
+            and args.l2
+            and args.weight_clip
+            and args.min_clip
+            and args.max_clip
         ):
             trainer = Trainer(
                 epochs=args.epochs,
                 lr=args.lr,
                 loss=args.loss,
                 is_attentionUNet=args.attentionUNet,
+                is_l1=args.l1,
+                is_l2=args.l2,
+                is_weight_clip=args.weight_clip,
+                min_clip=args.min_clip,
+                max_clip=args.max_clip,
                 alpha=args.alpha,
                 gamma=args.gamma,
                 display=args.display,
