@@ -1,5 +1,3 @@
-import sys
-import os
 import argparse
 import torch
 import torch.nn as nn
