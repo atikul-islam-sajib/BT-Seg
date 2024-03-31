@@ -1,0 +1,5 @@
+2024-03-31 14:35:12,374 - root - INFO - Decoder(
+  (model): Sequential(
+    (deconv1): ConvTranspose2d(1024, 512, kernel_size=(2, 2), stride=(2, 2))
+  )
+)
