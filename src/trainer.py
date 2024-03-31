@@ -18,6 +18,9 @@ from utils import load, dump, device_init
 from helpers import helpers
 
 
+import numpy as np
+
+
 class Trainer:
     """
     A trainer class for training a U-Net or Attention U-Net model for image segmentation tasks.
@@ -62,45 +65,33 @@ class Trainer:
 
     def __init__(
         self,
-        epochs=10,
-        lr=1e-4,
+        epochs=50,
+        lr=1e-2,
         loss=None,
         is_attentionUNet=False,
-        is_l1=False,
-        is_l2=False,
-        is_weight_clip=False,
+        smooth=0.01,
         alpha=0.25,
         gamma=2,
-        smooth=0.01,
-        beta1=0.5,
+        beta1=0.9,
         beta2=0.999,
-        min_clip=-0.01,
-        max_clip=0.01,
         device="mps",
         display=True,
     ):
+
         self.epochs = epochs
         self.lr = lr
         self.loss = loss
-        self.alpha = alpha
         self.is_attentionUNet = is_attentionUNet
-        self.is_l1 = is_l1
-        self.is_l2 = is_l2
-        self.is_weight_clip = is_weight_clip
-        self.gamma = gamma
         self.smooth = smooth
+        self.alpha = alpha
+        self.gamma = gamma
         self.beta1 = beta1
         self.beta2 = beta2
-        self.min_clip = min_clip
-        self.max_clip = max_clip
-        self.device = device_init(device=device)
-        self.is_display = display
+        self.device = device_init(device)
+        self.display = display
         self.history = {"train_loss": list(), "test_loss": list()}
 
-        self.min_clip = self.min_clip
-        self.max_clip = self.max_clip
-
-        self.setups = helpers(
+        self.setup = helpers(
             is_attentionUNet=self.is_attentionUNet,
             device=self.device,
             lr=self.lr,
@@ -110,13 +101,13 @@ class Trainer:
             gamma=self.gamma,
         )
 
-        self.optimizer = self.setups["optimizer"]
-        self.model = self.setups["model"]
-        self.loss = self.setups["loss"]
-        self.train_dataloader = self.setups["train_dataloader"]
-        self.test_dataloader = self.setups["test_dataloader"]
+        self.model = self.setup["model"]
+        self.optimizer = self.setup["optimizer"]
+        self.criterion = self.setup["criterion"]
+        self.train_dataloader = self.setup["train_dataloader"]
+        self.test_dataloader = self.setup["test_dataloader"]
 
-    def l1_loss(self, model, lambda_value=0.01):
+    def l1(self, model, value=0.01):
         """
         Calculates the L1 regularization loss.
 
@@ -127,11 +118,12 @@ class Trainer:
         Returns:
             torch.Tensor: The L1 regularization loss.
         """
-        return lambda_value * sum(
-            (torch.norm(input=params, p=1) for params in model.parameters())
-        )
+        if model is not None:
+            return value * sum(torch.norm(params, 1) for params in model.parameters())
+        else:
+            raise Exception("model should be defined".capitalize())
 
-    def l2_loss(self, model, lambda_value=0.01):
+    def l2(self, model, value=0.01):
         """
         Calculates the L2 regularization loss.
 
@@ -142,11 +134,12 @@ class Trainer:
         Returns:
             torch.Tensor: The L2 regularization loss.
         """
-        return lambda_value * sum(
-            (torch.norm(input=params, p=2) for params in model.parameters())
-        )
+        if model is not None:
+            return value * sum(torch.norm(params, 2) for params in model.parameters())
+        else:
+            raise Exception("model should be defined".capitalize())
 
-    def update_training_loss(self, **kwargs):
+    def update_train(self, **kwargs):
         """
         Updates the model's weights by performing a single step of training.
 
@@ -161,30 +154,15 @@ class Trainer:
 
         train_predicted_masks = self.model(kwargs["images"])
 
-        if self.is_l1:
-            train_predicted_loss = self.loss(
-                train_predicted_masks, kwargs["masks"]
-            ) + self.l1_loss(self.model)
+        train_predicted_loss = self.criterion(train_predicted_masks, kwargs["masks"])
 
-        elif self.is_l2:
-            train_predicted_loss = self.loss(
-                train_predicted_masks, kwargs["masks"]
-            ) + self.l2_loss(self.model)
-
-        else:
-            train_predicted_loss = self.loss(train_predicted_masks, kwargs["masks"])
-
-        if self.is_weight_clip:
-            for params in self.model.parameters():
-                params.data.clamp_(-self.min_clip, self.max_clip)
-
-        train_predicted_loss.backward(retain_graph=True)
+        train_predicted_loss.backward()
 
         self.optimizer.step()
 
         return train_predicted_loss.item()
 
-    def update_testing_loss(self, **kwargs):
+    def update_test(self, **kwargs):
         """
         Computes the loss on the test dataset without updating the model's weights.
 
@@ -196,7 +174,8 @@ class Trainer:
             float: The testing loss for the current step.
         """
         test_predicted_masks = self.model(kwargs["images"])
-        test_predicted_loss = self.loss(test_predicted_masks, kwargs["masks"])
+
+        test_predicted_loss = self.criterion(test_predicted_masks, kwargs["masks"])
 
         return test_predicted_loss.item()
 
@@ -231,7 +210,7 @@ class Trainer:
             kwargs (dict): Contains 'epoch', 'epochs', 'train_loss', and 'test_loss', detailing
                            the current epoch, total epochs, training loss, and testing loss, respectively.
         """
-        if self.is_display == True:
+        if self.display == True:
             print(
                 "Epochs: [{}/{}] - train_loss: [{:.5f}] - test_loss: [{:.5f}]".format(
                     kwargs["epoch"],
@@ -240,7 +219,7 @@ class Trainer:
                     kwargs["test_loss"],
                 )
             )
-        elif self.is_display == False:
+        elif self.display == False:
             print(
                 "Epochs - {}/{} is completed".format(kwargs["epoch"], kwargs["epochs"])
             )
@@ -272,72 +251,61 @@ class Trainer:
             trainer.train()  # Starts the training process
             ```
         """
-        try:
-            self.__setup__()
-        except Exception as e:
-            print("The exception in the section # {}".format(e).capitalize())
-        else:
-            self.model.train()
-            for epoch in tqdm(range(self.epochs)):
-                train_loss = list()
-                test_loss = list()
 
-                for _, (images, masks) in enumerate(self.train_dataloader):
-                    images = images.to(self.device)
-                    masks = masks.to(self.device)
+        for epoch in tqdm(range(self.epochs)):
+            total_train_loss = list()
+            total_test_loss = list()
 
-                    train_loss.append(
-                        self.update_training_loss(images=images, masks=masks)
-                    )
+            for images, masks in self.train_dataloader:
+                images = images.to(self.device)
+                masks = masks.to(self.device)
 
-                self.model.eval()
+                total_train_loss.append(self.update_train(images=images, masks=masks))
 
-                for _, (images, masks) in enumerate(self.test_dataloader):
-                    images = images.to(self.device)
-                    masks = masks.to(self.device)
+            for images, masks in self.test_dataloader:
+                images = images.to(self.device)
+                masks = masks.to(self.device)
 
-                    test_loss.append(
-                        self.update_testing_loss(images=images, masks=masks)
-                    )
+                total_test_loss.append(self.update_test(images=images, masks=masks))
 
-                try:
-                    self.saved_checkpoints(epoch=epoch + 1)
+            try:
+                self.saved_checkpoints(epoch=epoch + 1)
 
-                    self.history["train_loss"].append(np.mean(train_loss))
-                    self.history["test_loss"].append(np.mean(test_loss))
+                self.history["train_loss"].append(np.mean(total_train_loss))
+                self.history["test_loss"].append(np.mean(total_test_loss))
 
-                except Exception as e:
-                    print(e)
-                else:
-                    images, _ = next(iter(self.test_dataloader))
-                    predicted_masks = self.model(images.to(self.device))
-                    if os.path.exists(TRAIN_IMAGES_PATH):
-                        save_image(
-                            predicted_masks,
-                            os.path.join(
-                                TRAIN_IMAGES_PATH,
-                                "train_masks_{}.png".format(epoch + 1),
-                            ),
-                            nrow=6,
-                            normalize=True,
-                        )
-                    else:
-                        raise Exception("Train images path not found.".capitalize())
-                finally:
-                    self.show_progress(
-                        epoch=epoch + 1,
-                        epochs=self.epochs,
-                        train_loss=np.mean(train_loss),
-                        test_loss=np.mean(test_loss),
-                    )
-
-            if os.path.exists(METRICS_PATH):
-                dump(
-                    value=self.history,
-                    filename=os.path.join(METRICS_PATH, "metrics.pkl"),
-                )
+            except Exception as e:
+                print(e)
             else:
-                raise Exception("Metrics path not found.".capitalize())
+                images, _ = next(iter(self.test_dataloader))
+                predicted_masks = self.model(images.to(self.device))
+                if os.path.exists(TRAIN_IMAGES_PATH):
+                    save_image(
+                        predicted_masks,
+                        os.path.join(
+                            TRAIN_IMAGES_PATH,
+                            "train_masks_{}.png".format(epoch + 1),
+                        ),
+                        nrow=4,
+                        normalize=True,
+                    )
+                else:
+                    raise Exception("Train images path not found.".capitalize())
+
+            finally:
+                self.show_progress(
+                    epoch=epoch + 1,
+                    epochs=self.epochs,
+                    train_loss=np.mean(total_train_loss),
+                    test_loss=np.mean(total_test_loss),
+                )
+        if os.path.exists(METRICS_PATH):
+            dump(
+                value=self.history,
+                filename=os.path.join(METRICS_PATH, "metrics.pkl"),
+            )
+        else:
+            raise Exception("Metrics path not found.".capitalize())
 
     @staticmethod
     def plot_loss_curves():
@@ -373,10 +341,10 @@ if __name__ == "__main__":
         "--lr", type=float, default=1e-2, help="Learning rate".capitalize()
     )
     parser.add_argument(
-        "--loss", type=str, default="dice", help="Loss function".capitalize()
+        "--loss", type=str, default=None, help="Loss function".capitalize()
     )
     parser.add_argument(
-        "--attentionUNet", type=str, default=False, help="Attention UNet".capitalize()
+        "--attentionUNet", type=bool, default=False, help="Attention UNet".capitalize()
     )
     parser.add_argument(
         "--display", type=bool, default=True, help="Display progress".capitalize()
@@ -391,55 +359,34 @@ if __name__ == "__main__":
     parser.add_argument(
         "--gamma", type=float, default=2, help="Gamma value".capitalize()
     )
-    parser.add_argument("--l1", type=float, default=1e-2, help="L1 value".capitalize())
-    parser.add_argument("--l2", type=float, default=1e-2, help="L2 value".capitalize())
-    parser.add_argument(
-        "--weight_clip", type=str, default=False, help="Weight Clip".capitalize()
-    )
-    parser.add_argument(
-        "--min_clip", type=float, default=0.0, help="Min Clip".capitalize()
-    )
-    parser.add_argument(
-        "--max_clip", type=float, default=1.0, help="Max Clip".capitalize()
-    )
+    # parser.add_argument("--l1", type=float, default=1e-2, help="L1 value".capitalize())
+    # parser.add_argument("--l2", type=float, default=1e-2, help="L2 value".capitalize())
+    # parser.add_argument(
+    #     "--weight_clip", type=str, default=False, help="Weight Clip".capitalize()
+    # )
+    # parser.add_argument(
+    #     "--min_clip", type=float, default=0.0, help="Min Clip".capitalize()
+    # )
+    # parser.add_argument(
+    #     "--max_clip", type=float, default=1.0, help="Max Clip".capitalize()
+    # )
     parser.add_argument("--train", action="store_true", help="Train model".capitalize())
 
     args = parser.parse_args()
 
     if args.train:
-        if (
-            args.epochs
-            and args.lr
-            and args.loss
-            and args.attentionUNet
-            and args.display
-            and args.device
-            and args.smooth_value
-            and args.alpha
-            and args.gamma
-            and args.l1
-            and args.l2
-            and args.weight_clip
-            and args.min_clip
-            and args.max_clip
-        ):
-            trainer = Trainer(
-                epochs=args.epochs,
-                lr=args.lr,
-                loss=args.loss,
-                is_attentionUNet=args.attentionUNet,
-                is_l1=args.l1,
-                is_l2=args.l2,
-                is_weight_clip=args.weight_clip,
-                min_clip=args.min_clip,
-                max_clip=args.max_clip,
-                alpha=args.alpha,
-                gamma=args.gamma,
-                display=args.display,
-                device=args.device,
-                smooth=args.smooth,
-            )
+        trainer = Trainer(
+            epochs=args.epochs,
+            lr=args.lr,
+            loss=args.loss,
+            is_attentionUNet=args.attentionUNet,
+            alpha=args.alpha,
+            gamma=args.gamma,
+            display=args.display,
+            device=args.device,
+            smooth=args.smooth,
+        )
 
-            trainer.train()
+        trainer.train()
     else:
         raise Exception("Train flag is not set.".capitalize())
