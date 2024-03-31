@@ -1,2 +1,6 @@
 RAW_PATH = "./data/raw/"
 PROCESSED_PATH = "./data/processed/"
+TRAIN_CHECKPOINT_PATH = "./checkpoints/train_models/"
+TEST_CHECKPOINT_PATH = "./checkpoints/best_model/"
+TRAIN_IMAGES_PATH = "./outputs/train_images/"
+METRICS_PATH = "./metrics/"
