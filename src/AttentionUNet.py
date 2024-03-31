@@ -13,6 +13,52 @@ from attention_block import AttentionBlock
 
 
 class AttentionUNet(nn.Module):
+    """
+    Implements the Attention U-Net architecture for image segmentation.
+
+    This architecture incorporates attention blocks into the traditional U-Net structure to focus on relevant features for segmentation tasks.
+
+    Attributes:
+
+    | Attribute           | Type        | Description                                           |
+    |---------------------|-------------|-------------------------------------------------------|
+    | `encoder_layer1`    | `Encoder`   | The first encoder layer with 3 input and 64 output channels. |
+    | `encoder_layer2`    | `Encoder`   | The second encoder layer with 64 input and 128 output channels. |
+    | `encoder_layer3`    | `Encoder`   | The third encoder layer with 128 input and 256 output channels. |
+    | `encoder_layer4`    | `Encoder`   | The fourth encoder layer with 256 input and 512 output channels. |
+    | `bottom_layer`      | `Encoder`   | The bottom layer (bottleneck) with 512 input and 1024 output channels. |
+    | `max_pool`          | `MaxPool2d` | Max pooling layer with kernel size 2 and stride 2 for downsampling. |
+    | `intermediate_layer1` | `Encoder` | Intermediate layer post-bottom layer with 1024 input and 512 output channels. |
+    | `intermediate_layer2` | `Encoder` | Second intermediate layer with 512 input and 256 output channels. |
+    | `intermediate_layer3` | `Encoder` | Third intermediate layer with 256 input and 128 output channels. |
+    | `intermediate_layer4` | `Encoder` | Fourth intermediate layer with 128 input and 64 output channels. |
+    | `decoder_layer1`    | `Decoder`   | The first decoder layer combining bottom and encoder layer outputs. |
+    | `decoder_layer2`    | `Decoder`   | The second decoder layer for upscaling and combining features. |
+    | `decoder_layer3`    | `Decoder`   | The third decoder layer for further upscaling and feature combination. |
+    | `decoder_layer4`    | `Decoder`   | The fourth decoder layer for final upscaling before the output layer. |
+    | `attention_layer1`  | `AttentionBlock` | First attention block for focusing features before the first decoder layer. |
+    | `attention_layer2`  | `AttentionBlock` | Second attention block before the second decoder layer. |
+    | `attention_layer3`  | `AttentionBlock` | Third attention block before the third decoder layer. |
+    | `attention_layer4`  | `AttentionBlock` | Fourth attention block before the final decoder layer. |
+    | `final_layer`       | `Sequential`| The final layer applying a 1x1 convolution and sigmoid activation for segmentation output. |
+
+    Methods:
+    - `forward(x)`: Defines the forward pass of the model.
+    - `total_params(model)`: Static method to calculate total parameters of the model.
+
+    Example usage:
+    ```python
+    model = AttentionUNet()
+    output = model(input_tensor)
+    print(AttentionUNet.total_params(model))
+    ```
+
+    | Method            | Description                                      |
+    |-------------------|--------------------------------------------------|
+    | `forward`         | Performs the forward pass of the network.        |
+    | `total_params`    | Calculates the total number of parameters.       |
+    """
+
     def __init__(self):
         super(AttentionUNet, self).__init__()
 
@@ -44,6 +90,17 @@ class AttentionUNet(nn.Module):
         )
 
     def forward(self, x):
+        """
+        Defines the forward pass of the Attention U-Net model.
+
+        | Parameter | Type         | Description              |
+        |-----------|--------------|--------------------------|
+        | x         | torch.Tensor | The input image tensor.  |
+
+        | Returns   | Type         | Description              |
+        |-----------|--------------|--------------------------|
+        | torch.Tensor | torch.Tensor | The segmented output tensor. |
+        """
         # Encoder layers
         encoder_1_output = self.encoder_layer1(x)
         pooled_encoder_1_output = self.max_pool(encoder_1_output)
@@ -94,6 +151,17 @@ class AttentionUNet(nn.Module):
 
     @staticmethod
     def total_params(model):
+        """
+        Calculate the total number of parameters in the model.
+
+        | Parameter | Type         | Description            |
+        |-----------|--------------|------------------------|
+        | model     | nn.Module    | The model to evaluate. |
+
+        | Returns   | Type         | Description            |
+        |-----------|--------------|------------------------|
+        | int       | int          | Total number of parameters. |
+        """
         return sum(p.numel() for p in model.parameters())
 
 
