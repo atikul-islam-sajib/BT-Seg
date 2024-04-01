@@ -18,9 +18,6 @@ from utils import load, dump, device_init
 from helpers import helpers
 
 
-import numpy as np
-
-
 class Trainer:
     """
     A trainer class for training a U-Net or Attention U-Net model for image segmentation tasks.
@@ -32,7 +29,8 @@ class Trainer:
     | loss              | str       | The loss function to use. Options include 'dice', 'dice_bce', 'IoU', 'focal', and 'combo'. Defaults to binary cross-entropy if not specified.            |
     | is_attentionUNet  | bool      | If True, uses the AttentionUNet model, otherwise uses U-Net. Default is False.                                                                            |
     | is_l1             | bool      | If True, applies L1 regularization. Default is False.                                                                                                     |
-    | is_l2             | bool      | If True, applies L2 regularization. Default is False.                                                                                                     |
+    | is_l2             | bool      | If True, applies L2 regularization. Default is False.
+    | is_elastic             | bool      | If True, applies elastic regularization. Default is False. |
     | is_weight_clip    | bool      | If True, applies weight clipping to the model's parameters. Default is False.                                                                             |
     | alpha             | float     | The alpha parameter for Focal loss and Combo loss. Default is 0.25.                                                                                       |
     | gamma             | float     | The gamma parameter for Focal loss and Combo loss. Default is 2.                                                                                          |
@@ -69,6 +67,10 @@ class Trainer:
         lr=1e-2,
         loss=None,
         is_attentionUNet=False,
+        is_l1=False,
+        is_l2=False,
+        is_elastic=False,
+        is_weight_clip=False,
         smooth=0.01,
         alpha=0.25,
         gamma=2,
@@ -82,6 +84,10 @@ class Trainer:
         self.lr = lr
         self.loss = loss
         self.is_attentionUNet = is_attentionUNet
+        self.is_l1 = is_l1
+        self.is_l2 = is_l2
+        self.is_elastic = is_elastic
+        self.is_weight_clip = is_weight_clip
         self.smooth = smooth
         self.alpha = alpha
         self.gamma = gamma
@@ -139,6 +145,37 @@ class Trainer:
         else:
             raise Exception("model should be defined".capitalize())
 
+    def elastic_net(self, model, value=0.01):
+        """
+        Calculate the Elastic Net regularization term for a given model.
+
+        Elastic Net regularization is a linear combination of the L1 and L2
+        regularization terms. It is used to penalize complex models to prevent
+        overfitting. This method computes the Elastic Net regularization term
+        as a weighted sum of the L1 and L2 penalties of the model parameters.
+
+        Parameters:
+        - model: The model for which to compute the Elastic Net regularization. The model
+        should have methods or attributes that allow for the calculation of L1 and L2
+        regularization terms.
+        - value: A float specifying the weighting of the Elastic Net term. Defaults to 0.01.
+
+        Returns:
+        - The Elastic Net regularization term as a float.
+
+        Raises:
+        - Exception: If the `model` argument is None, indicating that no model was provided.
+
+        Example:
+        - elastic_net_value = instance.elastic_net(model=my_model, value=0.01)
+        This would calculate the Elastic Net regularization term for `my_model` with a
+        weight of 0.01.
+        """
+        if model is not None:
+            return value * (self.l1(model=model) + self.l2(model=model))
+        else:
+            raise Exception("model should be defined".capitalize())
+
     def update_train(self, **kwargs):
         """
         Updates the model's weights by performing a single step of training.
@@ -155,6 +192,19 @@ class Trainer:
         train_predicted_masks = self.model(kwargs["images"])
 
         train_predicted_loss = self.criterion(train_predicted_masks, kwargs["masks"])
+
+        if self.is_l1 == True:
+            train_predicted_loss += self.l1(model=self.model)
+
+        if self.is_l2 == True:
+            train_predicted_loss += self.l2(model=self.model)
+
+        if self.is_elastic == True:
+            train_predicted_loss += self.elastic_net(model=self.model)
+
+        if self.is_weight_clip == True:
+            for params in self.model.parameters():
+                params.data.clamp_(-0.10, 0.01)
 
         train_predicted_loss.backward()
 
@@ -359,17 +409,18 @@ if __name__ == "__main__":
     parser.add_argument(
         "--gamma", type=float, default=2, help="Gamma value".capitalize()
     )
-    # parser.add_argument("--l1", type=float, default=1e-2, help="L1 value".capitalize())
-    # parser.add_argument("--l2", type=float, default=1e-2, help="L2 value".capitalize())
-    # parser.add_argument(
-    #     "--weight_clip", type=str, default=False, help="Weight Clip".capitalize()
-    # )
-    # parser.add_argument(
-    #     "--min_clip", type=float, default=0.0, help="Min Clip".capitalize()
-    # )
-    # parser.add_argument(
-    #     "--max_clip", type=float, default=1.0, help="Max Clip".capitalize()
-    # )
+    parser.add_argument(
+        "--is_l1", type=bool, default=False, help="L1 value".capitalize()
+    )
+    parser.add_argument(
+        "--is_l2", type=bool, default=False, help="L2 value".capitalize()
+    )
+    parser.add_argument(
+        "--is_elastic", type=bool, default=False, help="Elastic Transform".capitalize()
+    )
+    parser.add_argument(
+        "--is_weight_clip", type=bool, default=False, help="Weight Clip".capitalize()
+    )
     parser.add_argument("--train", action="store_true", help="Train model".capitalize())
 
     args = parser.parse_args()
@@ -380,6 +431,10 @@ if __name__ == "__main__":
             lr=args.lr,
             loss=args.loss,
             is_attentionUNet=args.attentionUNet,
+            is_l1=args.is_l1,
+            is_l2=args.is_l2,
+            is_elastic=args.is_elastic,
+            is_weight_clip=args.is_weight_clip,
             alpha=args.alpha,
             gamma=args.gamma,
             display=args.display,
