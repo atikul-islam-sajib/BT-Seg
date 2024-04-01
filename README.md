@@ -17,8 +17,8 @@ UNet is a neural network architecture designed for biomedical image segmentation
 
 <table>
   <tr>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg" alt="UNet" style="height: 300px;"/></td>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg" alt="AttentionUNet" style="height: 300px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg" alt="UNet" style="height: 250px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg" alt="AttentionUNet" style="height: 250px;"/></td>
   </tr>
   <tr>
     <td align="center">UNet - output</td>
