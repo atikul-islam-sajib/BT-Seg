@@ -257,7 +257,7 @@ The `Trainer` module handles the training process, accepting various parameters 
 trainer = Trainer(
     epochs=100,
     lr=0.001,
-    loss="Dice",
+    loss="dice", # Set None, "bce", "focal", "dice", "tversky", "jaccard", or "combo
     is_attentionUNet=False,  # Set True to use Attention UNet
     is_l1=False,
     is_l2=False,
