@@ -1,4 +1,8 @@
-# U-Net for Semantic Image Segmentation
+# U-Net & AttentionUNet for Semantic Image Segmentation
+
+U-Net is a convolutional neural network designed for semantic image segmentation. This implementation of U-Net is tailored for high performance on various image segmentation tasks, allowing for precise object localization within images.
+
+<img src="https://media.geeksforgeeks.org/wp-content/uploads/20220614121231/Group14.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
 
 #### UNet - output
 
@@ -7,10 +11,6 @@
 #### AttentionUNet - input
 
 <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg">
-
-U-Net is a convolutional neural network designed for semantic image segmentation. This implementation of U-Net is tailored for high performance on various image segmentation tasks, allowing for precise object localization within images.
-
-<img src="https://media.geeksforgeeks.org/wp-content/uploads/20220614121231/Group14.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
 
 ## Features
 
@@ -21,12 +21,12 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 | **Training and Testing Scripts** | Provides streamlined scripts for both training and testing phases, simplifying the end-to-end workflow.                                                                                                               |
 | **Visualization Tools**          | Equipped with tools for tracking training progress and visualizing segmentation outcomes, enabling clear insight into model effectiveness.                                                                            |
 | **Custom Training via CLI**      | Offers a versatile command-line interface for personalized training configurations, enhancing flexibility in model training.                                                                                          |
-| **Import Modules**               | Supports straightforward integration into various projects or workflows with well-documented Python modules, simplifying the adoption of U-Net functionality.                                                         |
+| **Import Modules**               | Supports straightforward integration into various projects or workflows with well-documented Python modules, simplifying the adoption of U-Net, AttentionUNet functionality.                                          |
 | **Multi-Platform Support**       | Guarantees compatibility with various computational backends, including MPS for GPU acceleration on Apple devices, CPU, and CUDA for Nvidia GPU acceleration, ensuring adaptability across different hardware setups. |
 
 ## Demo - During training
 
-![AC-GAN - Medical Image Dataset Generator with class labels: Gif file](https://raw.githubusercontent.com/atikul-islam-sajib/U-Net-MultiClass/main/outputs/train_gif/train_masks.gif)
+![AC-GAN - Medical Image Dataset Generator with class labels: Gif file](https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif)
 
 ## Getting Started
 
@@ -42,11 +42,11 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 
 Follow these steps to get the project set up on your local machine:
 
-| Step | Instruction                                  | Command                                                                  |
-| ---- | -------------------------------------------- | ------------------------------------------------------------------------ |
-| 1    | Clone this repository to your local machine. | **git clone https://github.com/atikul-islam-sajib/U-Net-MultiClass.git** |
-| 2    | Navigate into the project directory.         | **cd U-Net-MultiClass**                                                  |
-| 3    | Install the required Python packages.        | **pip install -r requirements.txt**                                      |
+| Step | Instruction                                  | Command                                                        |
+| ---- | -------------------------------------------- | -------------------------------------------------------------- |
+| 1    | Clone this repository to your local machine. | **git clone https://github.com/atikul-islam-sajib/BT-Seg.git** |
+| 2    | Navigate into the project directory.         | **cd BT-Seg**                                                  |
+| 3    | Install the required Python packages.        | **pip install -r requirements.txt**                            |
 
 ## Project Structure
 
@@ -100,54 +100,29 @@ The dataset is organized into three categories for semantic image segmentation t
 
 ```
 segmentation/
-├── Original/
-│ ├── Benign/
-│ │ ├── benign(1).png
-│ │ ├── benign(2).png
-│ │ ├── ...
-│ ├── Early/
-│ │ ├── early(1).png
-│ │ ├── early(2).png
-│ │ ├── ...
-│ ├── Pre/
-│ │ ├── pre(1).png
-│ │ ├── pre(2).png
-│ │ ├── ...
-│ ├── Pro/
-│ │ ├── pro(1).png
-│ │ ├── pro(2).png
-│ │ ├── ...
-├── Segmented/
-│ ├── Benign/
-│ │ ├── benign(1).png
-│ │ ├── benign(2).png
-│ │ ├── ...
-│ ├── Early/
-│ │ ├── early(1).png
-│ │ ├── early(2).png
-│ │ ├── ...
-│ ├── Pre/
-│ │ ├── pre(1).png
-│ │ ├── pre(2).png
-│ │ ├── ...
-│ ├── Pro/
-│ │ ├── pro(1).png
-│ │ ├── pro(2).png
-│ │ ├── ...
-
+├── images/
+│ ├── 1.png
+│ ├── 2.png
+│ ├── ...
+│ ├── ...
+├── masks/
+│ ├── 1.png
+│ ├── 2.png
+│ ├── ...
+│ ├── ...
 ```
 
 #### Naming Convention:
 
-- **Images and Masks**: Within each category folder, images and their corresponding masks are stored together. The naming convention for images is `[category](n).png`, and for masks, it is in Segmented `[category](n).png`, where `[category]` represents the type of the image (benign, normal, or malignant), and `(n)` is a unique identifier. This convention facilitates easy identification and association of each image with its respective mask.
+- **Images and Masks**: Within each category folder, images and their corresponding masks are stored together. The naming convention for images is `(n).png`, and for masks, it is in Segmented `(n).png`, where n represents the type of the image (benign, normal, or malignant), and `(n)` is a unique identifier. This convention facilitates easy identification and association of each image with its respective mask.
 
-For detailed documentation on the dataset visit the [Dataset - Kaggle](https://www.kaggle.com/datasets/mehradaria/leukemia).
+For detailed documentation on the dataset visit the [Dataset - Kaggle](https://www.kaggle.com/datasets/nikhilroxtomar/brain-tumor-segmentation).
 
 ### Documentation U-Net
 
 For detailed documentation on the implementation and usage, visit the -> [U-Net Documentation](https://atikul-islam-sajib.github.io/U-Net-MultiClass-Deploy/).
 
-### User's guidance Notebook for U-Net
+### User's guidance Notebook for BT-Seg
 
 For detailed implementation and usage - CLI, visit the -> [U-Net: CLI Notebook](./research/notebooks/ModelTrain-CLI.ipynb).
 
@@ -156,40 +131,45 @@ For detailed implementation and usage - Custom Modules, visit the -> [U-Net: Cus
 # Command Line Usage
 
 ```
-python cli.py [--image_path PATH] [--batch_size SIZE] [--split_ratio RATIO] [--image_size SIZE] [--epochs EPOCHS] [--lr LEARNING_RATE] [--loss LOSS] [--display DISPLAY] [--device DEVICE] [--smooth_value VALUE] [--alpha ALPHA] [--gamma GAMMA] [--train] [--test]
+python cli.py --help
 ```
 
 ### CLI - Arguments
 
-| Argument         | Type    | Default | Description                                                        |
-| ---------------- | ------- | ------- | ------------------------------------------------------------------ |
-| `--image_path`   | `str`   | None    | Path to the zip file containing the images.                        |
-| `--batch_size`   | `int`   | 4       | Batch size for the DataLoader.                                     |
-| `--split_ratio`  | `float` | 0.25    | Ratio to split the dataset into train and test sets.               |
-| `--image_size`   | `int`   | 128     | Size of the images.                                                |
-| `--epochs`       | `int`   | 100     | Number of epochs to train.                                         |
-| `--lr`           | `float` | 1e-2    | Learning rate.                                                     |
-| `--loss`         | `str`   | "dice"  | Loss function to use.                                              |
-| `--display`      | `bool`  | True    | Whether to display progress during training.                       |
-| `--device`       | `str`   | "mps"   | Device to use for training/testing. Options: "cpu", "cuda", "mps". |
-| `--smooth_value` | `float` | 0.01    | Smooth value for loss calculation.                                 |
-| `--alpha`        | `float` | 0.5     | Alpha value for loss calculation.                                  |
-| `--gamma`        | `float` | 2       | Gamma value for loss calculation.                                  |
-| `--train`        | Action  | False   | Flag to initiate training process.                                 |
-| `--test`         | Action  | False   | Flag to initiate testing process.                                  |
+| Argument           | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `--image_path`     | Path to the zip file containing the images. |
+| `--batch_size`     | Batch size for the dataloader.              |
+| `--split_ratio`    | Split ratio for the dataset.                |
+| `--image_size`     | Image size for the dataloader.              |
+| `--epochs`         | Number of epochs.                           |
+| `--lr`             | Learning rate.                              |
+| `--loss`           | Loss function to use.                       |
+| `--attentionUNet`  | Use Attention UNet model if set.            |
+| `--display`        | Display training progress and metrics.      |
+| `--device`         | Computation device ('cuda', 'mps', etc.).   |
+| `--smooth`         | Smooth value for certain regularization.    |
+| `--alpha`          | Alpha value for specific loss functions.    |
+| `--gamma`          | Gamma value for specific loss functions.    |
+| `--is_l1`          | Enable L1 regularization.                   |
+| `--is_l2`          | Enable L2 regularization.                   |
+| `--is_elastic`     | Apply elastic transformation to the data.   |
+| `--is_weight_clip` | Enable weight clipping.                     |
+| `--train`          | Flag to initiate the training process.      |
+| `--test`           | Flag to initiate the testing process.       |
 
 ### Supported Loss Functions
 
 The CLI tool supports various loss functions, each with specific parameters for fine-tuning the training process.
 
-| Loss Function | Parameters                             | Description                                                                              |
-| ------------- | -------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `DiceLoss`    | `smooth=0.01`                          | Dice loss function with a smooth value to avoid division by zero.                        |
-| `DiceBCELoss` | `smooth=0.01`                          | Combination of Dice and Binary Cross-Entropy (BCE) losses.                               |
-| `FocalLoss`   | `alpha=0.25`, `gamma=2`                | Focal loss function, useful for unbalanced classes. Alpha and Gamma are hyperparameters. |
-| `TverskyLoss` | `smooth=0.01`                          | Tversky loss function, a generalization of Dice loss.                                    |
-| `JaccardLoss` | `smooth=0.01`                          | Jaccard loss function, a generalization of Dice loss.                                    |
-| `ComboLoss`   | `smooth=0.01`, `alpha=0.25`, `gamma=2` | Combo loss function, a generalization of Dice loss, FocalLoss and BCELoss                |
+| Loss Function | Parameters           | CLI Usage Example                                     | Description                                                                                               |
+| ------------- | -------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| BCELoss       | N/A                  | `--loss None`                                         | Binary Cross-Entropy Loss for binary classification tasks.                                                |
+| FocalLoss     | alpha, gamma         | `--loss focal --alpha 0.8 --gamma 2`                  | Focal Loss to address class imbalance by focusing more on hard to classify examples.                      |
+| DiceLoss      | smooth               | `--loss dice --smooth 1e-6`                           | Dice Loss for segmentation tasks, measuring overlap between predicted and actual segmentation maps.       |
+| TverskyLoss   | alpha, beta, smooth  | `--loss tversky --alpha 0.5 --beta 0.5 --smooth 1e-6` | Tversky Loss allows flexibility by controlling the importance of false positives and false negatives.     |
+| JaccardLoss   | smooth               | `--loss jaccard --smooth 1e-6`                        | Jaccard Loss (IoU Loss) for evaluating the similarity between the predicted and actual segmentation maps. |
+| ComboLoss     | smooth, alpha, gamma | `--loss combo --smooth 1e-6 --alpha 0.5 --gamma 0.5`  | A combination of BCE, Focal, and Dice Losses to leverage their benefits for handling class imbalance.     |
 
 ### Training and Testing
 
