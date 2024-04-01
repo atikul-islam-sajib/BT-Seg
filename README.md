@@ -1,6 +1,6 @@
 # U-Net & AttentionUNet for Semantic Image Segmentation
 
-U-Net is a convolutional neural network designed for semantic image segmentation. This implementation of U-Net is tailored for high performance on various image segmentation tasks, allowing for precise object localization within images.
+UNet is a neural network architecture designed for biomedical image segmentation, featuring a U-shaped design for detailed localization and context capture. Attention UNet enhances UNet by incorporating attention gates, focusing the model on relevant image regions for improved segmentation accuracy. This attention mechanism is especially beneficial in medical imaging, where precise segmentation of diverse structures is crucial.
 
 <table>
   <tr>
@@ -212,6 +212,16 @@ Below is a table that outlines various CLI command examples for training and tes
 
 ### Training and Testing with Custom Modules
 
+#### Import all custom modules
+
+```python
+from src.dataloader import Loader
+from src.UNet import UNet
+from src.AttentionUNet import AttentionUNet
+from src.trainer import Trainer
+from src.test import Charts
+```
+
 #### Loader Module Usage
 
 The `Loader` module is designed for data preparation tasks such as loading, splitting, and optionally applying transformations.
@@ -270,7 +280,7 @@ The `Charts` module is utilized for evaluating the model's performance post-trai
 
 ```python
 # Initialize the Charts for performance evaluation
-charts = Charts(device="cuda", is_attentionUNet=False)  # Set True if testing Attention UNet
+charts = Charts(device="cuda", is_attentionUNet=False)  # Set True if testing Attention UNet; # Set cpu for CPU testing, set mps for MPS testing
 
 # Execute the testing and generate charts
 charts.test()
