@@ -13,13 +13,18 @@ U-Net is a convolutional neural network designed for semantic image segmentation
   </tr>
 </table>
 
-#### UNet - output
+#### Results
 
-<img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg">
-
-#### AttentionUNet - input
-
-<img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg">
+<table>
+  <tr>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg" alt="UNet" style="width: 100%; max-width: 400px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg" alt="AttentionUNet" style="width: 100%; max-width: 400px;"/></td>
+  </tr>
+  <tr>
+    <td align="center">UNet - output</td>
+    <td align="center">AttentionUNet - output</td>
+  </tr>
+</table>
 
 ## Features
 
