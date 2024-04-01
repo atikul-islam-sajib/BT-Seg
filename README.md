@@ -26,16 +26,16 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 
 ## Demo - During training
 
-<p align="center">
-  <figure>
-    <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" style="width: 50%;"/>
-    <figcaption>UNet</figcaption>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <figure style="margin: 10px;">
+    <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" style="width: 100%; max-width: 400px;"/>
+    <figcaption style="text-align: center;">UNet</figcaption>
   </figure>
-  <figure>
-    <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="Second GIF description" style="width: 50%;"/>
-    <figcaption>AttentionUNet</figcaption>
+  <figure style="margin: 10px;">
+    <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="Second GIF description" style="width: 100%; max-width: 400px;"/>
+    <figcaption style="text-align: center;">AttentionUNet</figcaption>
   </figure>
-</p>
+</div>
 
 ## Getting Started
 
