@@ -217,11 +217,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "--device", type=str, default="mps", help="Device to run the model on."
     )
+    parser.add_argument(
+        "is_attentionUNet",
+        type=bool,
+        default=False,
+        help="Define the attentionUNet model.".capitalize(),
+    )
 
     args = parser.parse_args()
 
     if args.device:
-        charts = Charts(device="mps")
+        charts = Charts(device=args.device, is_attentionUNet=args.is_attentionUNet)
         charts.test()
     else:
         raise Exception("Device not specified.".capitalize())
