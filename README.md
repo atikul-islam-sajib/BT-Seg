@@ -147,9 +147,9 @@ For detailed documentation on the implementation and usage, visit the -> [U-Net 
 
 ### User's guidance Notebook for BT-Seg
 
-For detailed implementation and usage - CLI, visit the -> [U-Net: CLI Notebook](./research/notebooks/ModelTrain-CLI.ipynb).
+For detailed implementation and usage - CLI, visit the -> [BT-Seg: CLI Notebook](./research/notebooks/ModelTrain-CLI.ipynb).
 
-For detailed implementation and usage - Custom Modules, visit the -> [U-Net: Custom Modules Notebook](./research/notebooks/ModelTrain-Modules.ipynb).
+For detailed implementation and usage - Custom Modules, visit the -> [BT-Seg: Custom Modules Notebook](./research/notebooks/ModelTrain-Modules.ipynb).
 
 # Command Line Usage
 
