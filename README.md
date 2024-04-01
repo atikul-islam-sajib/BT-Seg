@@ -5,7 +5,7 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 <table>
   <tr>
     <td><img src="https://media.geeksforgeeks.org/wp-content/uploads/20220614121231/Group14.jpg"" alt="UNet" style="width: 100%; max-width: 400px;"/></td>
-    <td><img src="https://www.researchgate.net/publication/324472010/figure/fig1/AS:614439988494349@1523505317982/A-block-diagram-of-the-proposed-Attention-U-Net-segmentation-model-Input-image-is.png" alt="AttentionUNet" style="width: 100%; max-width: 400px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/architecture/attention.png" alt="AttentionUNet" style="width: 100%; max-width: 400px;"/></td>
   </tr>
   <tr>
     <td align="center">UNet</td>
