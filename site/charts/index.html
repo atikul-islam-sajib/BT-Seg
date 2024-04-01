@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Charts - U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Charts";
+        var mkdocs_page_input_path = "charts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../UNet/">U-Net</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FocalLoss/">FocalLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Charts</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line-arguments">Command Line Arguments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#class-charts">Class Charts</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#initialization">Initialization</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Charts</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="charts-project">Charts Project</h1>
+<p>The Charts project is designed to visualize the performance of segmentation models, specifically UNet and AttentionUNet, through various charts and GIFs showcasing training progress. This utility is intended to aid in the analysis and presentation of model effectiveness in tasks such as medical image segmentation.</p>
+<h2 id="usage">Usage</h2>
+<p>The main functionality is encapsulated in the <code>Charts</code> class, which can be run from the command line. It supports various operations, including model testing, data plotting, and GIF generation to visualize training progress.</p>
+<h3 id="command-line-arguments">Command Line Arguments</h3>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--device</code></td>
+<td>string</td>
+<td><code>"mps"</code></td>
+<td>Specifies the computing device for model operations.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="class-charts">Class <code>Charts</code></h3>
+<h4 id="initialization">Initialization</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>device</code></td>
+<td>string</td>
+<td><code>"mps"</code></td>
+<td>The computing device for model operations.</td>
+</tr>
+<tr>
+<td><code>is_attentionUNet</code></td>
+<td>bool</td>
+<td><code>None</code></td>
+<td>Determines if AttentionUNet model is used.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="methods">Methods</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__init__(self, device)</code></td>
+<td>Initializes the Charts object with the specified device.</td>
+</tr>
+<tr>
+<td><code>select_best_model(self)</code></td>
+<td>Selects the best model based on saved checkpoints.</td>
+</tr>
+<tr>
+<td><code>obtain_dataloader(self)</code></td>
+<td>Loads the test dataset.</td>
+</tr>
+<tr>
+<td><code>data_normalized(self, **kwargs)</code></td>
+<td>Normalizes the data for plotting.</td>
+</tr>
+<tr>
+<td><code>plot_data_comparison(self)</code></td>
+<td>Plots a comparison of images, masks, and predicted masks.</td>
+</tr>
+<tr>
+<td><code>generate_gif(self)</code></td>
+<td>Generates a GIF from training images.</td>
+</tr>
+<tr>
+<td><code>test(self)</code></td>
+<td>Executes the test phase, including visualization.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="examples">Examples</h2>
+<p>To test the model and generate visualizations, run the following command:</p>
+<pre><code class="language-bash">python charts.py --device cuda
+</code></pre>
+<p>This command will run the <code>test</code> method on a CUDA device if available, evaluating the model and producing visualizations of its performance.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Ensure that the paths in the <code>config.py</code> file correctly point to your model, dataset, and other relevant files.</li>
+<li>The <code>device</code> argument allows you to specify the hardware for computations. It defaults to "mps" (Apple Metal Performance Shaders), but can be set to "cuda" for NVIDIA GPUs or "cpu" for the system's central processing unit.</li>
+<li>The project is configured to work with MKDocs for easy documentation. To serve the documentation locally, install MKDocs and run <code>mkdocs serve</code> in the project's root directory.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../trainer/" class="btn btn-neutral float-left" title="Trainer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cli/" class="btn btn-neutral float-right" title="CLI">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../trainer/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cli/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

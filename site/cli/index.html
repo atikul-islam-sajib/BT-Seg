@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>CLI - U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "CLI";
+        var mkdocs_page_input_path = "cli.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../UNet/">U-Net</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FocalLoss/">FocalLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../charts/">Charts</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">CLI</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line-arguments">Command-Line Arguments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#loss">Loss</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#usages">Usages</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">CLI</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="command-line-interface-for-unet-training-and-testing">Command Line Interface for UNet Training and Testing</h1>
+<h2 id="overview">Overview</h2>
+<p>This Command Line Interface (CLI) utility facilitates the configuration and execution of training or testing for UNet and Attention UNet models. It provides a versatile set of command-line options for specifying dataset characteristics, training parameters, model choices, and evaluation procedures. The utility is designed to streamline the process of loading data, conducting model training, or performing tests with comprehensive metrics visualization.</p>
+<h2 id="installation">Installation</h2>
+<p>Ensure Python and necessary dependencies are installed in your environment. This typically includes PyTorch and any specific libraries for data handling or visualization like Matplotlib.</p>
+<h3 id="command-line-arguments">Command-Line Arguments</h3>
+<p>The utility supports various arguments to customize its operation:</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image_path</code></td>
+<td>Path to the zip file containing the images.</td>
+</tr>
+<tr>
+<td><code>--batch_size</code></td>
+<td>Batch size for the dataloader.</td>
+</tr>
+<tr>
+<td><code>--split_ratio</code></td>
+<td>Split ratio for the dataset.</td>
+</tr>
+<tr>
+<td><code>--image_size</code></td>
+<td>Image size for the dataloader.</td>
+</tr>
+<tr>
+<td><code>--epochs</code></td>
+<td>Number of epochs.</td>
+</tr>
+<tr>
+<td><code>--lr</code></td>
+<td>Learning rate.</td>
+</tr>
+<tr>
+<td><code>--loss</code></td>
+<td>Loss function to use.</td>
+</tr>
+<tr>
+<td><code>--attentionUNet</code></td>
+<td>Use Attention UNet model if set.</td>
+</tr>
+<tr>
+<td><code>--display</code></td>
+<td>Display training progress and metrics.</td>
+</tr>
+<tr>
+<td><code>--device</code></td>
+<td>Computation device ('cuda', 'mps', etc.).</td>
+</tr>
+<tr>
+<td><code>--smooth</code></td>
+<td>Smooth value for certain regularization.</td>
+</tr>
+<tr>
+<td><code>--alpha</code></td>
+<td>Alpha value for specific loss functions.</td>
+</tr>
+<tr>
+<td><code>--gamma</code></td>
+<td>Gamma value for specific loss functions.</td>
+</tr>
+<tr>
+<td><code>--is_l1</code></td>
+<td>Enable L1 regularization.</td>
+</tr>
+<tr>
+<td><code>--is_l2</code></td>
+<td>Enable L2 regularization.</td>
+</tr>
+<tr>
+<td><code>--is_elastic</code></td>
+<td>Apply elastic transformation to the data.</td>
+</tr>
+<tr>
+<td><code>--is_weight_clip</code></td>
+<td>Enable weight clipping.</td>
+</tr>
+<tr>
+<td><code>--train</code></td>
+<td>Flag to initiate the training process.</td>
+</tr>
+<tr>
+<td><code>--test</code></td>
+<td>Flag to initiate the testing process.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loss">Loss</h3>
+<table>
+<thead>
+<tr>
+<th>Loss Function</th>
+<th>Parameters</th>
+<th>CLI Usage Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BCELoss</td>
+<td>N/A</td>
+<td><code>--loss None</code></td>
+<td>Binary Cross-Entropy Loss for binary classification tasks.</td>
+</tr>
+<tr>
+<td>FocalLoss</td>
+<td>alpha, gamma</td>
+<td><code>--loss focal --alpha 0.8 --gamma 2</code></td>
+<td>Focal Loss to address class imbalance by focusing more on hard to classify examples.</td>
+</tr>
+<tr>
+<td>DiceLoss</td>
+<td>smooth</td>
+<td><code>--loss dice --smooth 1e-6</code></td>
+<td>Dice Loss for segmentation tasks, measuring overlap between predicted and actual segmentation maps.</td>
+</tr>
+<tr>
+<td>TverskyLoss</td>
+<td>alpha, beta, smooth</td>
+<td><code>--loss tversky --alpha 0.5 --beta 0.5 --smooth 1e-6</code></td>
+<td>Tversky Loss allows flexibility by controlling the importance of false positives and false negatives.</td>
+</tr>
+<tr>
+<td>JaccardLoss</td>
+<td>smooth</td>
+<td><code>--loss jaccard --smooth 1e-6</code></td>
+<td>Jaccard Loss (IoU Loss) for evaluating the similarity between the predicted and actual segmentation maps.</td>
+</tr>
+<tr>
+<td>ComboLoss</td>
+<td>smooth, alpha, gamma</td>
+<td><code>--loss combo --smooth 1e-6 --alpha 0.5 --gamma 0.5</code></td>
+<td>A combination of BCE, Focal, and Dice Losses to leverage their benefits for handling class imbalance.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="usages">Usages</h3>
+<p>Below is a table that outlines various CLI command examples for training and testing models with and without the Attention UNet architecture, specifying different devices and whether or not a loss function is explicitly mentioned:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Training Without Attention UNet</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device cuda</code></td>
+<td>Trains a standard UNet model on the CUDA device with specified parameters.</td>
+</tr>
+<tr>
+<td><strong>Training With Attention UNet</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --attentionUNet --device cuda</code></td>
+<td>Trains an Attention UNet model on the CUDA device with specified parameters.</td>
+</tr>
+<tr>
+<td><strong>Training Without Specified Loss</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device cuda</code></td>
+<td>Trains a model (default UNet) on the CUDA device without explicitly specifying the loss function. Defaults may apply based on implementation.</td>
+</tr>
+<tr>
+<td><strong>Training With Specified Loss</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --loss dice --device cuda</code></td>
+<td>Trains a model with the specified Dice loss on the CUDA device.</td>
+</tr>
+<tr>
+<td><strong>Testing on CUDA</strong></td>
+<td><code>python cli.py --test --device cuda</code></td>
+<td>Tests a model on the CUDA device. Assumes model path or other necessary parameters are set by default or in the script.</td>
+</tr>
+<tr>
+<td><strong>Training on MPS (Apple Silicon)</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device mps</code></td>
+<td>Trains a standard UNet model on the MPS device with specified parameters. Useful for Apple Silicon users.</td>
+</tr>
+<tr>
+<td><strong>Training on CPU</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device cpu</code></td>
+<td>Trains a standard UNet model on the CPU with specified parameters. Ideal for environments without dedicated GPU resources.</td>
+</tr>
+<tr>
+<td><strong>Testing on MPS (Apple Silicon)</strong></td>
+<td><code>python cli.py --test --device mps</code></td>
+<td>Tests a model on the MPS device. Useful for Apple Silicon users.</td>
+</tr>
+<tr>
+<td><strong>Testing on CPU</strong></td>
+<td><code>python cli.py --test --device cpu</code></td>
+<td>Tests a model on the CPU. Ideal for environments without dedicated GPU resources.</td>
+</tr>
+</tbody>
+</table>
+<p>This table provides a quick reference for users to understand how to utilize the CLI utility for different training and testing scenarios across various devices and configurations, including with or without specific loss functions.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../charts/" class="btn btn-neutral float-left" title="Charts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../CustomModuls/" class="btn btn-neutral float-right" title="Custom Modules">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../charts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../CustomModuls/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

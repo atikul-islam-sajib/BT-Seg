@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>DiceBCELoss - U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "DiceBCELoss";
+        var mkdocs_page_input_path = "DiceBCELoss.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../UNet/">U-Net</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="./">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FocalLoss/">FocalLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">DiceBCELoss</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#creating-the-loss-function">Creating the Loss Function</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#training-with-dicebce">Training with DiceBCE</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cli-testing">CLI Testing</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#parameters-and-arguments">Parameters and Arguments</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#class-parameters">Class Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cli-arguments">CLI Arguments</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../charts/">Charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">DiceBCELoss</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="dicebce-loss-for-binary-segmentation">DiceBCE Loss for Binary Segmentation</h1>
+<h2 id="overview">Overview</h2>
+<p>The <code>DiceBCE</code> class combines Dice Loss and Binary Cross-Entropy (BCE) Loss, offering a robust loss function for binary segmentation tasks. This hybrid approach takes advantage of Dice Loss's effectiveness in handling class imbalance and the straightforward approach of BCE Loss to measure the difference between predicted and actual segmentation maps.</p>
+<h2 id="installation">Installation</h2>
+<p>Ensure Python and PyTorch are installed on your system. If not, follow the <a href="https://pytorch.org/get-started/locally/">PyTorch installation guide</a> to get started.</p>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li>Python 3.x</li>
+<li>PyTorch</li>
+</ul>
+<p>PyTorch can be installed via pip:</p>
+<pre><code class="language-sh">pip install torch torchvision
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="creating-the-loss-function">Creating the Loss Function</h3>
+<p>Instantiate <code>DiceBCE</code> with an optional smoothing factor to avoid division by zero in the Dice Loss calculation. This factor is particularly useful when the predicted and actual masks might have no overlap.</p>
+<pre><code class="language-python">from dice_bce_loss import DiceBCE  # Assuming you've saved the class in dice_bce_loss.py
+
+criterion = DiceBCE(smooth=1e-6)
+</code></pre>
+<h3 id="training-with-dicebce">Training with DiceBCE</h3>
+<p>Use <code>DiceBCE</code> as the loss function in your training loop. Here's a minimal example assuming you have a model for binary segmentation:</p>
+<pre><code class="language-python">model = UNet()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+predicted = model(input_images)  # input_images should be your batch of input images
+actual = target_masks  # target_masks should be the corresponding ground truth masks
+
+loss = criterion(predicted, actual)
+loss.backward()
+optimizer.step()
+</code></pre>
+<h3 id="cli-testing">CLI Testing</h3>
+<p>A simple command-line interface is included for testing the DiceBCE loss calculation with custom smoothing factors:</p>
+<pre><code class="language-sh">python dice_bce_loss.py --smooth 1e-6
+</code></pre>
+<h2 id="parameters-and-arguments">Parameters and Arguments</h2>
+<h3 id="class-parameters">Class Parameters</h3>
+<p><code>DiceBCE</code> initialization parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>smooth</td>
+<td>float</td>
+<td>1e-6</td>
+<td>Smoothing factor for Dice calculation to prevent division by zero.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cli-arguments">CLI Arguments</h3>
+<p>When using the CLI for testing:</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--smooth</code></td>
+<td>float</td>
+<td>1e-6</td>
+<td>Smoothing factor for Dice loss calculation.</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../TverskyLoss/" class="btn btn-neutral float-left" title="TverskyLoss"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ComboLoss/" class="btn btn-neutral float-right" title="ComboLoss">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../TverskyLoss/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ComboLoss/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

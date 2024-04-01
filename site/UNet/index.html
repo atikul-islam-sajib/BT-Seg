@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>U-Net - U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "U-Net";
+        var mkdocs_page_input_path = "UNet.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">U-Net</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FocalLoss/">FocalLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../charts/">Charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">U-Net</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="UNet"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="UNet.UNet" class="doc doc-heading">
+          <code>UNet</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="torch.Module">Module</span></code></p>
+
+  
+      <p>Implements the U-Net architecture for image segmentation tasks.</p>
+<p>The U-Net model is composed of an encoder (downsampling path),
+a bottleneck, and a decoder (upsampling path) with skip connections.</p>
+<h5 id="UNet.UNet--parameters">Parameters</h5>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N/A</td>
+<td>N/A</td>
+<td>This class does not accept parameters in its constructor.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="UNet.UNet--attributes">Attributes</h5>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>encoder_layer1</code></td>
+<td><code>Encoder</code></td>
+<td>The first encoder layer.</td>
+</tr>
+<tr>
+<td><code>encoder_layer2</code></td>
+<td><code>Encoder</code></td>
+<td>The second encoder layer.</td>
+</tr>
+<tr>
+<td><code>encoder_layer3</code></td>
+<td><code>Encoder</code></td>
+<td>The third encoder layer.</td>
+</tr>
+<tr>
+<td><code>encoder_layer4</code></td>
+<td><code>Encoder</code></td>
+<td>The fourth encoder layer.</td>
+</tr>
+<tr>
+<td><code>bottom_layer</code></td>
+<td><code>Encoder</code></td>
+<td>The bottom layer (bottleneck).</td>
+</tr>
+<tr>
+<td><code>decoder_layer1</code></td>
+<td><code>Decoder</code></td>
+<td>The first decoder layer.</td>
+</tr>
+<tr>
+<td><code>decoder_layer2</code></td>
+<td><code>Decoder</code></td>
+<td>The second decoder layer.</td>
+</tr>
+<tr>
+<td><code>decoder_layer3</code></td>
+<td><code>Decoder</code></td>
+<td>The third decoder layer.</td>
+</tr>
+<tr>
+<td><code>decoder_layer4</code></td>
+<td><code>Decoder</code></td>
+<td>The fourth decoder layer.</td>
+</tr>
+<tr>
+<td><code>final_layer</code></td>
+<td><code>Sequential</code></td>
+<td>The final layer applying convolution and sigmoid activation.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="UNet.UNet--example">Example</h5>
+<pre><code class="language-python">model = UNet()
+input = torch.randn(1, 3, 256, 256)  # Example input
+output = model(input)
+print(output.shape)  # Expected output shape: [1, 1, 256, 256]
+</code></pre>
+<p>Note: The input tensor's dimensions should match the expected dimensions of the U-Net model, typically <code>[batch_size, channels, height, width]</code>.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>UNet.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements the U-Net architecture for image segmentation tasks.</span>
+
+<span class="sd">    The U-Net model is composed of an encoder (downsampling path),</span>
+<span class="sd">    a bottleneck, and a decoder (upsampling path) with skip connections.</span>
+
+<span class="sd">    ### Parameters</span>
+
+<span class="sd">    | Parameter | Type | Description |</span>
+<span class="sd">    |-----------|------|-------------|</span>
+<span class="sd">    | N/A       | N/A  | This class does not accept parameters in its constructor. |</span>
+
+<span class="sd">    ### Attributes</span>
+
+<span class="sd">    | Attribute           | Type        | Description |</span>
+<span class="sd">    |---------------------|-------------|-------------|</span>
+<span class="sd">    | `encoder_layer1`    | `Encoder`   | The first encoder layer. |</span>
+<span class="sd">    | `encoder_layer2`    | `Encoder`   | The second encoder layer. |</span>
+<span class="sd">    | `encoder_layer3`    | `Encoder`   | The third encoder layer. |</span>
+<span class="sd">    | `encoder_layer4`    | `Encoder`   | The fourth encoder layer. |</span>
+<span class="sd">    | `bottom_layer`      | `Encoder`   | The bottom layer (bottleneck). |</span>
+<span class="sd">    | `decoder_layer1`    | `Decoder`   | The first decoder layer. |</span>
+<span class="sd">    | `decoder_layer2`    | `Decoder`   | The second decoder layer. |</span>
+<span class="sd">    | `decoder_layer3`    | `Decoder`   | The third decoder layer. |</span>
+<span class="sd">    | `decoder_layer4`    | `Decoder`   | The fourth decoder layer. |</span>
+<span class="sd">    | `final_layer`       | `Sequential`| The final layer applying convolution and sigmoid activation. |</span>
+
+<span class="sd">    ### Example</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    model = UNet()</span>
+<span class="sd">    input = torch.randn(1, 3, 256, 256)  # Example input</span>
+<span class="sd">    output = model(input)</span>
+<span class="sd">    print(output.shape)  # Expected output shape: [1, 1, 256, 256]</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    Note: The input tensor&#39;s dimensions should match the expected dimensions of the U-Net model, typically `[batch_size, channels, height, width]`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">UNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer1</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer2</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer3</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer4</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_layer</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer1</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer2</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer3</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer4</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer1</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer2</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer3</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer4</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Defines the forward pass of the U-Net model.</span>
+
+<span class="sd">        The method processes the input through consecutive encoder layers, followed by a bottom layer, and then through consecutive decoder layers. Skip connections are used to concatenate encoder outputs with corresponding decoder inputs for preserving spatial information lost during downsampling.</span>
+
+<span class="sd">        ### Parameters</span>
+
+<span class="sd">        | Parameter | Type       | Description                       |</span>
+<span class="sd">        |-----------|------------|-----------------------------------|</span>
+<span class="sd">        | `x`       | `torch.Tensor` | The input tensor of shape `[batch_size, channels, height, width]`. |</span>
+
+<span class="sd">        ### Returns</span>
+
+<span class="sd">        | Type         | Description                                         |</span>
+<span class="sd">        |--------------|-----------------------------------------------------|</span>
+<span class="sd">        | `torch.Tensor` | The output tensor of shape `[batch_size, 1, height, width]` after sigmoid activation. |</span>
+
+<span class="sd">        ### Process</span>
+
+<span class="sd">        1. **Encoder Path**: The input is processed through four encoder layers, with max pooling between each layer to reduce spatial dimensions.</span>
+<span class="sd">        2. **Bottom Layer**: Acts as a bottleneck, further processing the data from the last encoder layer.</span>
+<span class="sd">        3. **Decoder Path**: Data from the bottom layer is upsampled and concatenated with corresponding encoder outputs (skip connections) then passed through decoder layers.</span>
+<span class="sd">        4. **Final Output**: The last decoder output is passed through a final layer to produce the segmentation map.</span>
+
+<span class="sd">        ### Example</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        # Assuming an instance `model` of UNet and a 4D input tensor `input`.</span>
+<span class="sd">        output = model(input)</span>
+<span class="sd">        # `output` is now a tensor with the same height and width as `input`, and a single channel representing the segmentation map.</span>
+<span class="sd">        ```</span>
+
+<span class="sd">        This method implements the core functionality of the U-Net architecture, making it suitable for various segmentation tasks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Encoder path</span>
+        <span class="n">enc1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">pooled_enc1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc1_out</span><span class="p">)</span>
+
+        <span class="n">enc2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer2</span><span class="p">(</span><span class="n">pooled_enc1</span><span class="p">)</span>
+        <span class="n">pooled_enc2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc2_out</span><span class="p">)</span>
+
+        <span class="n">enc3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer3</span><span class="p">(</span><span class="n">pooled_enc2</span><span class="p">)</span>
+        <span class="n">pooled_enc3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc3_out</span><span class="p">)</span>
+
+        <span class="n">enc4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer4</span><span class="p">(</span><span class="n">pooled_enc3</span><span class="p">)</span>
+        <span class="n">pooled_enc4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc4_out</span><span class="p">)</span>
+
+        <span class="n">bottom_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_layer</span><span class="p">(</span><span class="n">pooled_enc4</span><span class="p">)</span>
+
+        <span class="c1"># Decoder path</span>
+        <span class="n">dec1_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer1</span><span class="p">(</span><span class="n">bottom_out</span><span class="p">,</span> <span class="n">enc4_out</span><span class="p">)</span>
+        <span class="n">dec1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer1</span><span class="p">(</span><span class="n">dec1_input</span><span class="p">)</span>
+
+        <span class="n">dec2_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer2</span><span class="p">(</span><span class="n">dec1_out</span><span class="p">,</span> <span class="n">enc3_out</span><span class="p">)</span>
+        <span class="n">dec2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer2</span><span class="p">(</span><span class="n">dec2_input</span><span class="p">)</span>
+
+        <span class="n">dec3_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer3</span><span class="p">(</span><span class="n">dec2_out</span><span class="p">,</span> <span class="n">enc2_out</span><span class="p">)</span>
+        <span class="n">dec3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer3</span><span class="p">(</span><span class="n">dec3_input</span><span class="p">)</span>
+
+        <span class="n">dec4_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer4</span><span class="p">(</span><span class="n">dec3_out</span><span class="p">,</span> <span class="n">enc1_out</span><span class="p">)</span>
+        <span class="n">dec4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer4</span><span class="p">(</span><span class="n">dec4_input</span><span class="p">)</span>
+
+        <span class="c1"># Final output</span>
+        <span class="n">final_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_layer</span><span class="p">(</span><span class="n">dec4_out</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">final_output</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">total_params</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the total number of parameters in a given PyTorch model.</span>
+
+<span class="sd">        This function iterates over all parameters in the model, counting the total number of</span>
+<span class="sd">        elements (i.e., the product of the size of each dimension of the parameter). It is useful for</span>
+<span class="sd">        getting a quick understanding of the model&#39;s complexity and size.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - model (torch.nn.Module): The PyTorch model whose parameters are to be counted.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - int: The total number of parameters in the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="UNet.UNet.forward" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Defines the forward pass of the U-Net model.</p>
+<p>The method processes the input through consecutive encoder layers, followed by a bottom layer, and then through consecutive decoder layers. Skip connections are used to concatenate encoder outputs with corresponding decoder inputs for preserving spatial information lost during downsampling.</p>
+<h6 id="UNet.UNet.forward--parameters">Parameters</h6>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td><code>torch.Tensor</code></td>
+<td>The input tensor of shape <code>[batch_size, channels, height, width]</code>.</td>
+</tr>
+</tbody>
+</table>
+<h6 id="UNet.UNet.forward--returns">Returns</h6>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>torch.Tensor</code></td>
+<td>The output tensor of shape <code>[batch_size, 1, height, width]</code> after sigmoid activation.</td>
+</tr>
+</tbody>
+</table>
+<h6 id="UNet.UNet.forward--process">Process</h6>
+<ol>
+<li><strong>Encoder Path</strong>: The input is processed through four encoder layers, with max pooling between each layer to reduce spatial dimensions.</li>
+<li><strong>Bottom Layer</strong>: Acts as a bottleneck, further processing the data from the last encoder layer.</li>
+<li><strong>Decoder Path</strong>: Data from the bottom layer is upsampled and concatenated with corresponding encoder outputs (skip connections) then passed through decoder layers.</li>
+<li><strong>Final Output</strong>: The last decoder output is passed through a final layer to produce the segmentation map.</li>
+</ol>
+<h6 id="UNet.UNet.forward--example">Example</h6>
+<pre><code class="language-python"># Assuming an instance `model` of UNet and a 4D input tensor `input`.
+output = model(input)
+# `output` is now a tensor with the same height and width as `input`, and a single channel representing the segmentation map.
+</code></pre>
+<p>This method implements the core functionality of the U-Net architecture, making it suitable for various segmentation tasks.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>UNet.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines the forward pass of the U-Net model.</span>
+
+<span class="sd">    The method processes the input through consecutive encoder layers, followed by a bottom layer, and then through consecutive decoder layers. Skip connections are used to concatenate encoder outputs with corresponding decoder inputs for preserving spatial information lost during downsampling.</span>
+
+<span class="sd">    ### Parameters</span>
+
+<span class="sd">    | Parameter | Type       | Description                       |</span>
+<span class="sd">    |-----------|------------|-----------------------------------|</span>
+<span class="sd">    | `x`       | `torch.Tensor` | The input tensor of shape `[batch_size, channels, height, width]`. |</span>
+
+<span class="sd">    ### Returns</span>
+
+<span class="sd">    | Type         | Description                                         |</span>
+<span class="sd">    |--------------|-----------------------------------------------------|</span>
+<span class="sd">    | `torch.Tensor` | The output tensor of shape `[batch_size, 1, height, width]` after sigmoid activation. |</span>
+
+<span class="sd">    ### Process</span>
+
+<span class="sd">    1. **Encoder Path**: The input is processed through four encoder layers, with max pooling between each layer to reduce spatial dimensions.</span>
+<span class="sd">    2. **Bottom Layer**: Acts as a bottleneck, further processing the data from the last encoder layer.</span>
+<span class="sd">    3. **Decoder Path**: Data from the bottom layer is upsampled and concatenated with corresponding encoder outputs (skip connections) then passed through decoder layers.</span>
+<span class="sd">    4. **Final Output**: The last decoder output is passed through a final layer to produce the segmentation map.</span>
+
+<span class="sd">    ### Example</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    # Assuming an instance `model` of UNet and a 4D input tensor `input`.</span>
+<span class="sd">    output = model(input)</span>
+<span class="sd">    # `output` is now a tensor with the same height and width as `input`, and a single channel representing the segmentation map.</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    This method implements the core functionality of the U-Net architecture, making it suitable for various segmentation tasks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Encoder path</span>
+    <span class="n">enc1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">pooled_enc1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc1_out</span><span class="p">)</span>
+
+    <span class="n">enc2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer2</span><span class="p">(</span><span class="n">pooled_enc1</span><span class="p">)</span>
+    <span class="n">pooled_enc2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc2_out</span><span class="p">)</span>
+
+    <span class="n">enc3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer3</span><span class="p">(</span><span class="n">pooled_enc2</span><span class="p">)</span>
+    <span class="n">pooled_enc3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc3_out</span><span class="p">)</span>
+
+    <span class="n">enc4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer4</span><span class="p">(</span><span class="n">pooled_enc3</span><span class="p">)</span>
+    <span class="n">pooled_enc4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">enc4_out</span><span class="p">)</span>
+
+    <span class="n">bottom_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_layer</span><span class="p">(</span><span class="n">pooled_enc4</span><span class="p">)</span>
+
+    <span class="c1"># Decoder path</span>
+    <span class="n">dec1_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer1</span><span class="p">(</span><span class="n">bottom_out</span><span class="p">,</span> <span class="n">enc4_out</span><span class="p">)</span>
+    <span class="n">dec1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer1</span><span class="p">(</span><span class="n">dec1_input</span><span class="p">)</span>
+
+    <span class="n">dec2_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer2</span><span class="p">(</span><span class="n">dec1_out</span><span class="p">,</span> <span class="n">enc3_out</span><span class="p">)</span>
+    <span class="n">dec2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer2</span><span class="p">(</span><span class="n">dec2_input</span><span class="p">)</span>
+
+    <span class="n">dec3_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer3</span><span class="p">(</span><span class="n">dec2_out</span><span class="p">,</span> <span class="n">enc2_out</span><span class="p">)</span>
+    <span class="n">dec3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer3</span><span class="p">(</span><span class="n">dec3_input</span><span class="p">)</span>
+
+    <span class="n">dec4_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer4</span><span class="p">(</span><span class="n">dec3_out</span><span class="p">,</span> <span class="n">enc1_out</span><span class="p">)</span>
+    <span class="n">dec4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_layer4</span><span class="p">(</span><span class="n">dec4_input</span><span class="p">)</span>
+
+    <span class="c1"># Final output</span>
+    <span class="n">final_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_layer</span><span class="p">(</span><span class="n">dec4_out</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">final_output</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="UNet.UNet.total_params" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">total_params</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculates the total number of parameters in a given PyTorch model.</p>
+<p>This function iterates over all parameters in the model, counting the total number of
+elements (i.e., the product of the size of each dimension of the parameter). It is useful for
+getting a quick understanding of the model's complexity and size.</p>
+<p>Parameters:
+- model (torch.nn.Module): The PyTorch model whose parameters are to be counted.</p>
+<p>Returns:
+- int: The total number of parameters in the model.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>UNet.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">total_params</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the total number of parameters in a given PyTorch model.</span>
+
+<span class="sd">    This function iterates over all parameters in the model, counting the total number of</span>
+<span class="sd">    elements (i.e., the product of the size of each dimension of the parameter). It is useful for</span>
+<span class="sd">    getting a quick understanding of the model&#39;s complexity and size.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model (torch.nn.Module): The PyTorch model whose parameters are to be counted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - int: The total number of parameters in the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../attention_block/" class="btn btn-neutral float-left" title="Attention-Block"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../AttentionUNet/" class="btn btn-neutral float-right" title="AttentionUNet">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../attention_block/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../AttentionUNet/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

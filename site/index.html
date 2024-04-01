@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href=".">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation-instructions">Installation Instructions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#project-structure">Project Structure</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#dataset-organization-for-semantic-image-segmentation">Dataset Organization for Semantic Image Segmentation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#directory-structure">Directory Structure:</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#naming-convention">Naming Convention:</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#users-guidance-notebook-for-bt-seg">User's guidance Notebook for BT-Seg</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="UNet/">U-Net</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="FocalLoss/">FocalLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="charts/">Charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cli/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="u-net-attentionunet-for-semantic-image-segmentation">U-Net &amp; AttentionUNet for Semantic Image Segmentation</h1>
+<p>UNet is a neural network architecture designed for biomedical image segmentation, featuring a U-shaped design for detailed localization and context capture. Attention UNet enhances UNet by incorporating attention gates, focusing the model on relevant image regions for improved segmentation accuracy. This attention mechanism is especially beneficial in medical imaging, where precise segmentation of diverse structures is crucial.</p>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <figure style="margin: 10px;">
+    <img src="https://miro.medium.com/v2/resize:fit:1142/1*P8_bEkGZ_wtCjqkcugaTmw.png" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" style="width: 100%; max-width: 400px;"/>
+    <figcaption style="text-align: center;">UNet</figcaption>
+  </figure>
+  <figure style="margin: 10px;">
+    <img src="https://www.researchgate.net/publication/324472010/figure/fig1/AS:614439988494349@1523505317982/A-block-diagram-of-the-proposed-Attention-U-Net-segmentation-model-Input-image-is.png" alt="Second GIF description" style="width: 100%; max-width: 400px;"/>
+    <figcaption style="text-align: center;">AttentionUNet</figcaption>
+  </figure>
+</div>
+
+<h2 id="features">Features</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Efficient Implementation</strong></td>
+<td>Utilizes an optimized U-Net model architecture for superior performance on diverse image segmentation tasks.</td>
+</tr>
+<tr>
+<td><strong>Custom Dataset Support</strong></td>
+<td>Features easy-to-use data loading utilities that seamlessly accommodate custom datasets, requiring minimal configuration.</td>
+</tr>
+<tr>
+<td><strong>Training and Testing Scripts</strong></td>
+<td>Provides streamlined scripts for both training and testing phases, simplifying the end-to-end workflow.</td>
+</tr>
+<tr>
+<td><strong>Visualization Tools</strong></td>
+<td>Equipped with tools for tracking training progress and visualizing segmentation outcomes, enabling clear insight into model effectiveness.</td>
+</tr>
+<tr>
+<td><strong>Custom Training via CLI</strong></td>
+<td>Offers a versatile command-line interface for personalized training configurations, enhancing flexibility in model training.</td>
+</tr>
+<tr>
+<td><strong>Import Modules</strong></td>
+<td>Supports straightforward integration into various projects or workflows with well-documented Python modules, simplifying the adoption of U-Net, AttentionUNet functionality.</td>
+</tr>
+<tr>
+<td><strong>Multi-Platform Support</strong></td>
+<td>Guarantees compatibility with various computational backends, including MPS for GPU acceleration on Apple devices, CPU, and CUDA for Nvidia GPU acceleration, ensuring adaptability across different hardware setups.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="getting-started">Getting Started</h2>
+<h2 id="requirements">Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python Version</strong></td>
+<td>Python 3.9 or newer is required for compatibility with the latest features and library support.</td>
+</tr>
+<tr>
+<td><strong>CUDA-compatible GPU</strong></td>
+<td>Access to a CUDA-compatible GPU is recommended for training and testing with CUDA acceleration.</td>
+</tr>
+<tr>
+<td><strong>Python Libraries</strong></td>
+<td>Essential libraries include: <strong>torch</strong>, <strong>matplotlib</strong>, <strong>numpy</strong>, <strong>PIL</strong>, <strong>scikit-learn</strong>, <strong>opencv-python</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="installation-instructions">Installation Instructions</h2>
+<p>Follow these steps to get the project set up on your local machine:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Instruction</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Clone this repository to your local machine.</td>
+<td><strong>git clone https://github.com/atikul-islam-sajib/BT-Seg.git</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Navigate into the project directory.</td>
+<td><strong>cd BT-Seg</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Install the required Python packages.</td>
+<td><strong>pip install -r requirements.txt</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-structure">Project Structure</h2>
+<p>This project is thoughtfully organized to support the development, training, and evaluation of the U-Net model efficiently. Below is a concise overview of the directory structure and their specific roles:</p>
+<ul>
+<li><strong>checkpoints/</strong></li>
+<li>Stores model checkpoints during training for later resumption.</li>
+<li>
+<p><strong>best_model/</strong></p>
+</li>
+<li>
+<p>Contains the best-performing model checkpoints as determined by validation metrics.</p>
+</li>
+<li>
+<p><strong>train_models/</strong></p>
+</li>
+<li>
+<p>Houses all model checkpoints generated throughout the training process.</p>
+</li>
+<li>
+<p><strong>data/</strong></p>
+</li>
+<li>
+<p><strong>processed/</strong>: Processed data ready for modeling, having undergone normalization, augmentation, or encoding.</p>
+</li>
+<li>
+<p><strong>raw/</strong>: Original, unmodified data serving as the baseline for all preprocessing.</p>
+</li>
+<li>
+<p><strong>logs/</strong></p>
+</li>
+<li>
+<p><strong>Log</strong> files for debugging and tracking model training progress.</p>
+</li>
+<li>
+<p><strong>metrics/</strong></p>
+</li>
+<li>
+<p>Files related to model performance metrics for evaluation purposes.</p>
+</li>
+<li>
+<p><strong>outputs/</strong></p>
+</li>
+<li>
+<p><strong>test_images/</strong>: Images generated during the testing phase, including segmentation outputs.</p>
+</li>
+<li><strong>train_gif/</strong>: GIFs compiled from training images showcasing the model's learning progress.</li>
+<li>
+<p><strong>train_images/</strong>: Images generated during training for performance visualization.</p>
+</li>
+<li>
+<p><strong>research/</strong></p>
+</li>
+<li>
+<p><strong>notebooks/</strong>: Jupyter notebooks for research, experiments, and exploratory analyses conducted during the project.</p>
+</li>
+<li>
+<p><strong>src/</strong></p>
+</li>
+<li>
+<p>Source code directory containing all custom modules, scripts, and utility functions for the U-Net model.</p>
+</li>
+<li>
+<p><strong>unittest/</strong></p>
+</li>
+<li>Unit tests ensuring code reliability, correctness, and functionality across various project components.</li>
+</ul>
+<h3 id="dataset-organization-for-semantic-image-segmentation">Dataset Organization for Semantic Image Segmentation</h3>
+<p>The dataset is organized into three categories for semantic image segmentation tasks: benign, normal, and malignant. Each category directly contains paired images and their corresponding segmentation masks, stored together to simplify the association between images and masks.</p>
+<h2 id="directory-structure">Directory Structure:</h2>
+<pre><code>segmentation/
+├── images/
+│ ├── 1.png
+│ ├── 2.png
+│ ├── ...
+│ ├── ...
+├── masks/
+│ ├── 1.png
+│ ├── 2.png
+│ ├── ...
+│ ├── ...
+</code></pre>
+<h4 id="naming-convention">Naming Convention:</h4>
+<ul>
+<li><strong>Images and Masks</strong>: Within each category folder, images and their corresponding masks are stored together. The naming convention for images is <code>(n).png</code>, and for masks, it is in Segmented <code>(n).png</code>, where n represents the type of the image (benign, normal, or malignant), and <code>(n)</code> is a unique identifier. This convention facilitates easy identification and association of each image with its respective mask.</li>
+</ul>
+<p>For detailed documentation on the dataset visit the <a href="https://www.kaggle.com/datasets/nikhilroxtomar/brain-tumor-segmentation">Dataset - Kaggle</a>.</p>
+<h3 id="users-guidance-notebook-for-bt-seg">User's guidance Notebook for BT-Seg</h3>
+<p>For detailed implementation and usage - CLI, visit the -&gt; <a href="./research/notebooks/ModelTrain-CLI.ipynb">U-Net: CLI Notebook</a>.</p>
+<p>For detailed implementation and usage - Custom Modules, visit the -&gt; <a href="./research/notebooks/ModelTrain-Modules.ipynb">U-Net: Custom Modules Notebook</a>.</p>
+<h1 id="command-line-usage">Command Line Usage</h1>
+<pre><code>python cli.py --help
+</code></pre>
+<h3 id="cli-arguments">CLI - Arguments</h3>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image_path</code></td>
+<td>Path to the zip file containing the images.</td>
+</tr>
+<tr>
+<td><code>--batch_size</code></td>
+<td>Batch size for the dataloader.</td>
+</tr>
+<tr>
+<td><code>--split_ratio</code></td>
+<td>Split ratio for the dataset.</td>
+</tr>
+<tr>
+<td><code>--image_size</code></td>
+<td>Image size for the dataloader.</td>
+</tr>
+<tr>
+<td><code>--epochs</code></td>
+<td>Number of epochs.</td>
+</tr>
+<tr>
+<td><code>--lr</code></td>
+<td>Learning rate.</td>
+</tr>
+<tr>
+<td><code>--loss</code></td>
+<td>Loss function to use.</td>
+</tr>
+<tr>
+<td><code>--attentionUNet</code></td>
+<td>Use Attention UNet model if set.</td>
+</tr>
+<tr>
+<td><code>--display</code></td>
+<td>Display training progress and metrics.</td>
+</tr>
+<tr>
+<td><code>--device</code></td>
+<td>Computation device ('cuda', 'mps', etc.).</td>
+</tr>
+<tr>
+<td><code>--smooth</code></td>
+<td>Smooth value for certain regularization.</td>
+</tr>
+<tr>
+<td><code>--alpha</code></td>
+<td>Alpha value for specific loss functions.</td>
+</tr>
+<tr>
+<td><code>--gamma</code></td>
+<td>Gamma value for specific loss functions.</td>
+</tr>
+<tr>
+<td><code>--is_l1</code></td>
+<td>Enable L1 regularization.</td>
+</tr>
+<tr>
+<td><code>--is_l2</code></td>
+<td>Enable L2 regularization.</td>
+</tr>
+<tr>
+<td><code>--is_elastic</code></td>
+<td>Apply elastic transformation to the data.</td>
+</tr>
+<tr>
+<td><code>--is_weight_clip</code></td>
+<td>Enable weight clipping.</td>
+</tr>
+<tr>
+<td><code>--train</code></td>
+<td>Flag to initiate the training process.</td>
+</tr>
+<tr>
+<td><code>--test</code></td>
+<td>Flag to initiate the testing process.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supported-loss-functions">Supported Loss Functions</h3>
+<p>The CLI tool supports various loss functions, each with specific parameters for fine-tuning the training process.</p>
+<table>
+<thead>
+<tr>
+<th>Loss Function</th>
+<th>Parameters</th>
+<th>CLI Usage Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BCELoss</td>
+<td>N/A</td>
+<td><code>--loss None</code></td>
+<td>Binary Cross-Entropy Loss for binary classification tasks.</td>
+</tr>
+<tr>
+<td>FocalLoss</td>
+<td>alpha, gamma</td>
+<td><code>--loss focal --alpha 0.8 --gamma 2</code></td>
+<td>Focal Loss to address class imbalance by focusing more on hard to classify examples.</td>
+</tr>
+<tr>
+<td>DiceLoss</td>
+<td>smooth</td>
+<td><code>--loss dice --smooth 1e-6</code></td>
+<td>Dice Loss for segmentation tasks, measuring overlap between predicted and actual segmentation maps.</td>
+</tr>
+<tr>
+<td>TverskyLoss</td>
+<td>alpha, beta, smooth</td>
+<td><code>--loss tversky --alpha 0.5 --beta 0.5 --smooth 1e-6</code></td>
+<td>Tversky Loss allows flexibility by controlling the importance of false positives and false negatives.</td>
+</tr>
+<tr>
+<td>JaccardLoss</td>
+<td>smooth</td>
+<td><code>--loss jaccard --smooth 1e-6</code></td>
+<td>Jaccard Loss (IoU Loss) for evaluating the similarity between the predicted and actual segmentation maps.</td>
+</tr>
+<tr>
+<td>ComboLoss</td>
+<td>smooth, alpha, gamma</td>
+<td><code>--loss combo --smooth 1e-6 --alpha 0.5 --gamma 0.5</code></td>
+<td>A combination of BCE, Focal, and Dice Losses to leverage their benefits for handling class imbalance.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="training-and-testing">Training and Testing</h3>
+<p>Below is a table that outlines various CLI command examples for training and testing models with and without the Attention UNet architecture, specifying different devices and whether or not a loss function is explicitly mentioned:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Training Without Attention UNet</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device cuda</code></td>
+<td>Trains a standard UNet model on the CUDA device with specified parameters.</td>
+</tr>
+<tr>
+<td><strong>Training With Attention UNet</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --attentionUNet --device cuda</code></td>
+<td>Trains an Attention UNet model on the CUDA device with specified parameters.</td>
+</tr>
+<tr>
+<td><strong>Training Without Specified Loss</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device cuda</code></td>
+<td>Trains a model (default UNet) on the CUDA device without explicitly specifying the loss function. Defaults may apply based on implementation.</td>
+</tr>
+<tr>
+<td><strong>Training With Specified Loss</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --loss dice --device cuda</code></td>
+<td>Trains a model with the specified Dice loss on the CUDA device.</td>
+</tr>
+<tr>
+<td><strong>Testing on CUDA</strong></td>
+<td><code>python cli.py --test --device cuda</code></td>
+<td>Tests a model on the CUDA device. Assumes model path or other necessary parameters are set by default or in the script.</td>
+</tr>
+<tr>
+<td><strong>Training on MPS (Apple Silicon)</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device mps</code></td>
+<td>Trains a standard UNet model on the MPS device with specified parameters. Useful for Apple Silicon users.</td>
+</tr>
+<tr>
+<td><strong>Training on CPU</strong></td>
+<td><code>python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100 --lr 0.001 --device cpu</code></td>
+<td>Trains a standard UNet model on the CPU with specified parameters. Ideal for environments without dedicated GPU resources.</td>
+</tr>
+<tr>
+<td><strong>Testing on MPS (Apple Silicon)</strong></td>
+<td><code>python cli.py --test --device mps</code></td>
+<td>Tests a model on the MPS device. Useful for Apple Silicon users.</td>
+</tr>
+<tr>
+<td><strong>Testing on CPU</strong></td>
+<td><code>python cli.py --test --device cpu</code></td>
+<td>Tests a model on the CPU. Ideal for environments without dedicated GPU resources.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="training-and-testing-with-custom-modules">Training and Testing with Custom Modules</h3>
+<h4 id="import-all-custom-modules">Import all custom modules</h4>
+<pre><code class="language-python">from src.dataloader import Loader
+from src.UNet import UNet
+from src.AttentionUNet import AttentionUNet
+from src.trainer import Trainer
+from src.test import Charts
+</code></pre>
+<h4 id="loader-module-usage">Loader Module Usage</h4>
+<p>The <code>Loader</code> module is designed for data preparation tasks such as loading, splitting, and optionally applying transformations.</p>
+<pre><code class="language-python"># Initialize the Loader with dataset configurations
+loader = Loader(
+    image_path=&quot;path/to/your/images.zip&quot;,
+    batch_size=32,
+    split_ratio=0.8,
+    image_size=256,
+)
+
+# Unzip the dataset if necessary
+loader.unzip_folder()
+
+# Create a PyTorch DataLoader
+dataloader = loader.create_dataloader()
+
+# Display dataset details (optional)
+Loader.details_dataset()
+
+# Display a batch of images (optional)
+Loader.display_images()
+</code></pre>
+<h3 id="trainer-module-usage">Trainer Module Usage</h3>
+<p>The <code>Trainer</code> module handles the training process, accepting various parameters to configure the training session.</p>
+<pre><code class="language-python"># Initialize the Trainer with training configurations
+trainer = Trainer(
+    epochs=100,
+    lr=0.001,
+    loss=&quot;dice&quot;, # Set None, &quot;bce&quot;, &quot;focal&quot;, &quot;dice&quot;, &quot;tversky&quot;, &quot;jaccard&quot;, or &quot;combo
+    is_attentionUNet=False,  # Set True to use Attention UNet
+    is_l1=False,
+    is_l2=False,
+    is_elastic=False,
+    is_weight_clip=False,
+    alpha=0.5,
+    gamma=2.0,
+    display=True,
+    device=&quot;cuda&quot;,  # Or &quot;mps&quot;, &quot;cpu&quot;
+    smooth=1e-6,
+)
+
+# Start the training process
+trainer.train()
+</code></pre>
+<h3 id="charts-module-usage">Charts Module Usage</h3>
+<p>The <code>Charts</code> module is utilized for evaluating the model's performance post-training and generating relevant charts or metrics.</p>
+<pre><code class="language-python"># Initialize the Charts for performance evaluation
+charts = Charts(device=&quot;cuda&quot;, is_attentionUNet=False)  # Set True if testing Attention UNet; # Set cpu for CPU testing, set mps for MPS testing
+
+# Execute the testing and generate charts
+charts.test()
+</code></pre>
+<h4 id="5-visualize-results">5. Visualize Results</h4>
+<p>Visualize the test results and the loss curves by displaying the generated images. Ensure you specify the correct paths to the images.</p>
+<pre><code class="language-python">from IPython.display import Image
+
+# Display the result image
+Image(&quot;/content/BT-Seg/outputs/test_images/result.png&quot;)
+
+# Display the loss curve image
+Image(&quot;/content/BT-Seg/outputs/test_images/loss.png&quot;)
+</code></pre>
+<h2 id="contributing">Contributing</h2>
+<p>Contributions to improve this implementation of U-Net are welcome. Please follow the standard fork-branch-pull request workflow.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License - see the <a href="https://www.apache.org/licenses/LICENSE-2.0">LICENSE</a> file for details.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="dataloader/" class="btn btn-neutral float-right" title="DataLoader">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="dataloader/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.5.3
+Build Date UTC : 2024-04-01 17:59:16.824094+00:00
+-->

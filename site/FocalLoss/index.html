@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>FocalLoss - U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "FocalLoss";
+        var mkdocs_page_input_path = "FocalLoss.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../UNet/">U-Net</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">FocalLoss</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#initializing-focal-loss">Initializing Focal Loss</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#training-example">Training Example</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line-interface">Command Line Interface</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#parameters-and-arguments">Parameters and Arguments</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#class-parameters">Class Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cli-arguments">CLI Arguments</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../charts/">Charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">FocalLoss</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="focal-loss-for-handling-class-imbalance">Focal Loss for Handling Class Imbalance</h1>
+<h2 id="overview">Overview</h2>
+<p>The <code>FocalLoss</code> class implements the Focal Loss function, an innovative approach designed to enhance model performance on imbalanced datasets by reducing the relative loss for well-classified examples and putting more focus on hard, misclassified examples. It introduces two parameters, <code>alpha</code> and <code>gamma</code>, to control the loss's focus.</p>
+<h2 id="installation">Installation</h2>
+<p>Ensure you have Python and PyTorch installed on your system. Follow the <a href="https://pytorch.org/get-started/locally/">official PyTorch installation guide</a> if necessary.</p>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li>Python 3.x</li>
+<li>PyTorch</li>
+</ul>
+<p>Install PyTorch using pip:</p>
+<pre><code class="language-sh">pip install torch torchvision
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="initializing-focal-loss">Initializing Focal Loss</h3>
+<p>Create an instance of <code>FocalLoss</code> with custom values for <code>alpha</code> (to balance classes) and <code>gamma</code> (to focus training on hard examples):</p>
+<pre><code class="language-python">from focal_loss import FocalLoss  # Assuming the class is in focal_loss.py
+
+focal_loss = FocalLoss(alpha=0.25, gamma=2.0)
+</code></pre>
+<h3 id="training-example">Training Example</h3>
+<p>Incorporate <code>FocalLoss</code> into your training loop to address class imbalance:</p>
+<pre><code class="language-python">model = UNet()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+predicted = torch.sigmoid(model(input_data))  # input_data should be your batch of input
+actual = target_data  # target_data should be your batch of targets
+
+loss = focal_loss(predicted, actual)
+loss.backward()
+optimizer.step()
+</code></pre>
+<h3 id="command-line-interface">Command Line Interface</h3>
+<p>A simple CLI is provided for demonstrating the use of <code>FocalLoss</code> with predefined <code>alpha</code> and <code>gamma</code> values:</p>
+<pre><code class="language-sh">python focal_loss.py --alpha 0.25 --gamma 2
+</code></pre>
+<h2 id="parameters-and-arguments">Parameters and Arguments</h2>
+<h3 id="class-parameters">Class Parameters</h3>
+<p>Initialization parameters for <code>FocalLoss</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alpha</td>
+<td>float</td>
+<td>0.25</td>
+<td>Balancing factor for positive/negative class</td>
+</tr>
+<tr>
+<td>gamma</td>
+<td>float</td>
+<td>2</td>
+<td>Focusing parameter for scaling loss</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cli-arguments">CLI Arguments</h3>
+<p>Arguments for testing <code>FocalLoss</code> through the CLI:</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--alpha</code></td>
+<td>float</td>
+<td>0.25</td>
+<td>Alpha parameter for Focal Loss</td>
+</tr>
+<tr>
+<td><code>--gamma</code></td>
+<td>float</td>
+<td>2</td>
+<td>Gamma parameter for Focal Loss</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../DiceBCELoss/" class="btn btn-neutral float-left" title="DiceBCELoss"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../JaccardLoss/" class="btn btn-neutral float-right" title="JaccardLoss">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../DiceBCELoss/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../JaccardLoss/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

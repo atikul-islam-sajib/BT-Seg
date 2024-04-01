@@ -2,29 +2,16 @@
 
 UNet is a neural network architecture designed for biomedical image segmentation, featuring a U-shaped design for detailed localization and context capture. Attention UNet enhances UNet by incorporating attention gates, focusing the model on relevant image regions for improved segmentation accuracy. This attention mechanism is especially beneficial in medical imaging, where precise segmentation of diverse structures is crucial.
 
-<table>
-  <tr>
-    <td><img src="https://media.geeksforgeeks.org/wp-content/uploads/20220614121231/Group14.jpg" alt="UNet" style="width: 200%; max-width: 600px;"/></td>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/architecture/attention.png" alt="AttentionUNet" style="width: 200%; max-width: 600px;"/></td>
-  </tr>
-  <tr>
-    <td align="center">UNet</td>
-    <td align="center">AttentionUNet</td>
-  </tr>
-</table>
-
-#### Results
-
-<table>
-  <tr>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg" alt="UNet" style="width: 200%; max-width: 600px;"/></td>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg" alt="AttentionUNet" style="width: 200%; max-width: 600px;"/></td>
-  </tr>
-  <tr>
-    <td align="center">UNet - output</td>
-    <td align="center">AttentionUNet - output</td>
-  </tr>
-</table>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <figure style="margin: 10px;">
+    <img src="https://miro.medium.com/v2/resize:fit:1142/1*P8_bEkGZ_wtCjqkcugaTmw.png" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" style="width: 100%; max-width: 400px;"/>
+    <figcaption style="text-align: center;">UNet</figcaption>
+  </figure>
+  <figure style="margin: 10px;">
+    <img src="https://www.researchgate.net/publication/324472010/figure/fig1/AS:614439988494349@1523505317982/A-block-diagram-of-the-proposed-Attention-U-Net-segmentation-model-Input-image-is.png" alt="Second GIF description" style="width: 100%; max-width: 400px;"/>
+    <figcaption style="text-align: center;">AttentionUNet</figcaption>
+  </figure>
+</div>
 
 ## Features
 
@@ -37,19 +24,6 @@ UNet is a neural network architecture designed for biomedical image segmentation
 | **Custom Training via CLI**      | Offers a versatile command-line interface for personalized training configurations, enhancing flexibility in model training.                                                                                          |
 | **Import Modules**               | Supports straightforward integration into various projects or workflows with well-documented Python modules, simplifying the adoption of U-Net, AttentionUNet functionality.                                          |
 | **Multi-Platform Support**       | Guarantees compatibility with various computational backends, including MPS for GPU acceleration on Apple devices, CPU, and CUDA for Nvidia GPU acceleration, ensuring adaptability across different hardware setups. |
-
-## Demo - During training
-
-<table>
-  <tr>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="UNet" style="width: 100%; max-width: 400px;"/></td>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="AttentionUNet" style="width: 100%; max-width: 400px;"/></td>
-  </tr>
-  <tr>
-    <td align="center">UNet</td>
-    <td align="center">AttentionUNet</td>
-  </tr>
-</table>
 
 ## Getting Started
 
@@ -140,10 +114,6 @@ segmentation/
 - **Images and Masks**: Within each category folder, images and their corresponding masks are stored together. The naming convention for images is `(n).png`, and for masks, it is in Segmented `(n).png`, where n represents the type of the image (benign, normal, or malignant), and `(n)` is a unique identifier. This convention facilitates easy identification and association of each image with its respective mask.
 
 For detailed documentation on the dataset visit the [Dataset - Kaggle](https://www.kaggle.com/datasets/nikhilroxtomar/brain-tumor-segmentation).
-
-### Documentation U-Net & AttentionUNet
-
-For detailed documentation on the implementation and usage, visit the -> [U-Net & AttentionUNet Documentation](https://atikul-islam-sajib.github.io/BT-Seg-deploy/).
 
 ### User's guidance Notebook for BT-Seg
 
@@ -306,4 +276,4 @@ Contributions to improve this implementation of U-Net are welcome. Please follow
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://www.apache.org/licenses/LICENSE-2.0) file for details.

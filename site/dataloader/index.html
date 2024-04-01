@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>DataLoader - U-Net & AttentionUNet -  Brain Tumor segmentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "DataLoader";
+        var mkdocs_page_input_path = "dataloader.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> U-Net & AttentionUNet -  Brain Tumor segmentation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">DataLoader</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#parameters-methods">Parameters &amp; Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#initializing-the-loader">Initializing the Loader</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#extracting-and-processing-data">Extracting and Processing Data</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#displaying-dataset-details-and-images">Displaying Dataset Details and Images</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#script-usage">Script Usage</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../attention_block/">Attention-Block</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../UNet/">U-Net</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AttentionUNet/">AttentionUNet</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceLoss/">DiceLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FocalLoss/">FocalLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../JaccardLoss/">JaccardLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../TverskyLoss/">TverskyLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DiceBCELoss/">DiceBCELoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ComboLoss/">ComboLoss</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../charts/">Charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CustomModuls/">Custom Modules</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">U-Net & AttentionUNet -  Brain Tumor segmentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">DataLoader</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="image-segmentation-dataloader">Image Segmentation DataLoader</h1>
+<p>The <code>Loader</code> class is designed to facilitate the loading, preprocessing, splitting, and normalization of image and mask datasets for neural network training, particularly tailored for image segmentation tasks like those involving U-Net architectures.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Data Extraction:</strong> Unzips image datasets for processing.</li>
+<li><strong>Image Preprocessing:</strong> Applies transformations to both images and masks, including resizing, normalization, and converting masks to grayscale.</li>
+<li><strong>Dataset Splitting:</strong> Easily split datasets into training and testing sets.</li>
+<li><strong>Data Normalization:</strong> Normalizes image data to the range [0, 1].</li>
+<li><strong>Data Loading:</strong> Creates DataLoader objects for efficient batch processing during neural network training.</li>
+</ul>
+<h2 id="parameters-methods">Parameters &amp; Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image_path</td>
+<td>str</td>
+<td>Path to the zip file containing the images.</td>
+</tr>
+<tr>
+<td>image_size</td>
+<td>int</td>
+<td>Target size to which the images should be resized.</td>
+</tr>
+<tr>
+<td>batch_size</td>
+<td>int</td>
+<td>Number of images and masks in each batch of data.</td>
+</tr>
+<tr>
+<td>split_ratio</td>
+<td>float</td>
+<td>Ratio of the dataset to be used as test set.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><code>unzip_folder()</code>: Extracts images from a zip file to a specified directory.</li>
+<li><code>base_transformation()</code>: Applies basic transformations to images.</li>
+<li><code>mask_transformation()</code>: Applies transformations to mask images.</li>
+<li><code>split_dataset(images, masks)</code>: Splits the dataset into training and testing sets.</li>
+<li><code>create_dataloader()</code>: Prepares DataLoader objects for training and testing datasets.</li>
+<li><code>details_dataset()</code>: Prints details about the dataset.</li>
+<li><code>data_normalized(data)</code>: Normalizes a given dataset.</li>
+<li><code>display_images()</code>: Displays images and their corresponding masks from the dataset.</li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Ensure RAW_PATH and PROCESSED_PATH are correctly configured in your config file.</li>
+<li>This class requires the 'torch', 'torchvision', 'PIL', and 'cv2' libraries.
+  """</li>
+</ul>
+<h3 id="initializing-the-loader">Initializing the Loader</h3>
+<p>To start using the Loader, initialize it with the path to your dataset's zip file, desired image size, batch size, and split ratio:</p>
+<pre><code class="language-python">from loader import Loader
+
+loader = Loader(image_path=&quot;path/to/images.zip&quot;, image_size=128, batch_size=4, split_ratio=0.3)
+</code></pre>
+<h3 id="extracting-and-processing-data">Extracting and Processing Data</h3>
+<p>First, unzip the dataset and then create a DataLoader object:</p>
+<pre><code class="language-python">loader.unzip_folder()
+dataloader = loader.create_dataloader()
+</code></pre>
+<h3 id="displaying-dataset-details-and-images">Displaying Dataset Details and Images</h3>
+<p>To print details about the dataset and visualize some images along with their masks:</p>
+<pre><code class="language-python">Loader.details_dataset()
+Loader.display_images()
+</code></pre>
+<h2 id="script-usage">Script Usage</h2>
+<p>The functionality can also be accessed via a command-line script. To use it, execute the following command with the necessary arguments:</p>
+<pre><code class="language-bash">python dataloader_script.py --image_path &quot;/path/to/images.zip&quot; --batch_size 4 --split_ratio 0.3 --image_size 128
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../encoder/" class="btn btn-neutral float-right" title="Encoder">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../encoder/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
