@@ -1,12 +1,54 @@
 import argparse
 from dataloader import Loader
-from UNet import UNet
-from AttentionUNet import AttentionUNet
 from trainer import Trainer
 from test import Charts
 
 
 def cli():
+    """
+    Command Line Interface for configuring and running training or testing processes
+    for UNet and Attention UNet models.
+
+    This function parses command-line arguments to configure data loading, model training,
+    and testing. It supports a range of options allowing for specification of dataset
+    properties (such as path, batch size, split ratio, and image size), training
+    parameters (like epochs, learning rate, loss function, and regularization methods),
+    and model choices (UNet or Attention UNet). Depending on the arguments, it
+    initializes the data loading process, followed by model training or testing.
+
+    Arguments:
+        --image_path (str): Path to the zip file containing the images.
+        --batch_size (int): Batch size for the dataloader.
+        --split_ratio (float): Split ratio for training and validation datasets.
+        --image_size (int): The height and width of images after resizing.
+        --epochs (int): Number of epochs to train.
+        --lr (float): Learning rate for the optimizer.
+        --loss (str): Loss function to use.
+        --attentionUNet (bool): Whether to use Attention UNet instead of standard UNet.
+        --display (bool): Display training progress and metrics.
+        --device (str): Computation device to use ('cuda', 'mps', etc.).
+        --smooth (float): Smooth value for certain regularization.
+        --alpha (float): Alpha value for specific loss functions or regularization.
+        --gamma (float): Gamma value for specific loss functions.
+        --is_l1 (bool): Enable L1 regularization.
+        --is_l2 (bool): Enable L2 regularization.
+        --is_elastic (bool): Apply elastic transformation to the data.
+        --is_weight_clip (bool): Enable weight clipping.
+        --train (flag): Flag to initiate the training process.
+        --test (flag): Flag to initiate the testing process.
+
+    Based on the provided arguments, the function will orchestrate the setup and execution
+    of data loading, model training, or model testing. For training, it initializes a
+    data loader, processes the dataset, and begins training with specified configurations.
+    For testing, it initializes the test environment and runs model evaluation.
+
+    Example Command:
+        python cli.py --train --image_path "./data/images.zip" --batch_size 32 --epochs 100
+                       --lr 0.001 --attentionUNet --device cuda
+
+    This would train an Attention UNet model on the data located at "./data/images.zip",
+    with a batch size of 32 for 100 epochs, using a learning rate of 0.001 on the CUDA device.
+    """
     parser = argparse.ArgumentParser(
         description="CLI - Command LIne Interface for UNet".title()
     )
@@ -79,6 +121,8 @@ def cli():
         loader.unzip_folder()
 
         _ = loader.create_dataloader()
+
+        Loader.details_dataset()
 
         trainer = Trainer(
             epochs=args.epochs,
