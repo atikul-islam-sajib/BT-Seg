@@ -4,8 +4,8 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 
 <table>
   <tr>
-    <td><img src="https://media.geeksforgeeks.org/wp-content/uploads/20220614121231/Group14.jpg"" alt="UNet" style="width: 100%; max-width: 400px;"/></td>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/architecture/attention.png" alt="AttentionUNet" style="width: 100%; max-width: 400px;"/></td>
+    <td><img src="https://media.geeksforgeeks.org/wp-content/uploads/20220614121231/Group14.jpg" alt="UNet" style="width: 200%; max-width: 400px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/architecture/attention.png" alt="AttentionUNet" style="width: 200%; max-width: 400px;"/></td>
   </tr>
   <tr>
     <td align="center">UNet</td>
@@ -17,8 +17,8 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 
 <table>
   <tr>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg" alt="UNet" style="width: 100%; max-width: 400px;"/></td>
-    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg" alt="AttentionUNet" style="width: 100%; max-width: 400px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.jpg" alt="UNet" style="width: 200%; max-width: 400px;"/></td>
+    <td><img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.jpg" alt="AttentionUNet" style="width: 200%; max-width: 400px;"/></td>
   </tr>
   <tr>
     <td align="center">UNet - output</td>
