@@ -12,6 +12,7 @@ from loss.dice_loss import DiceLoss
 from loss.jaccard_loss import JaccardLoss
 from loss.focal_loss import FocalLoss
 from loss.combo_loss import ComboLoss
+from loss.tversky_loss import TverskyLoss
 
 
 def helpers(**kwargs):
@@ -71,6 +72,8 @@ def helpers(**kwargs):
         criterion = ComboLoss(
             smooth=kwargs["smooth"], alpha=kwargs["alpha"], gamma=kwargs["gamma"]
         )
+    elif loss == "tversky":
+        criterion = TverskyLoss(smooth=kwargs["smooth"])
     else:
         criterion = nn.BCELoss()
 
