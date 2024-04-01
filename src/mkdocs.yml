@@ -8,15 +8,16 @@ nav:
   - U-Net: UNet.md
   - AttentionUNet: AttentionUNet.md
   - DiceLoss: DiceLoss.md
+  - DiceBCELoss: DiceBCELoss.md
   - FocalLoss: FocalLoss.md
   - JaccardLoss: JaccardLoss.md
   - TverskyLoss: TverskyLoss.md
   - DiceBCELoss: DiceBCELoss.md
   - ComboLoss: ComboLoss.md
   - Trainer: trainer.md
-  - Charts: Charts.md
-  - CLI: CLI.md
-  - Custom Modules: CustomModules.md
+  - Charts: charts.md
+  - CLI: cli.md
+  - Custom Modules: CustomModuls.md
 
 theme: readthedocs
 plugins:
