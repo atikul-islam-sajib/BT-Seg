@@ -1,6 +1,12 @@
 # U-Net for Semantic Image Segmentation
 
-<img src="https://raw.githubusercontent.com/atikul-islam-sajib/Research-Assistant-Work-/main/IMG_8948.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
+#### UNet - output
+
+<img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/Unet-output/result.png">
+
+#### AttentionUNet - input
+
+<img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/result.png">
 
 U-Net is a convolutional neural network designed for semantic image segmentation. This implementation of U-Net is tailored for high performance on various image segmentation tasks, allowing for precise object localization within images.
 
