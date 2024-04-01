@@ -26,7 +26,16 @@ U-Net is a convolutional neural network designed for semantic image segmentation
 
 ## Demo - During training
 
-![AC-GAN - Medical Image Dataset Generator with class labels: Gif file](https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif)
+<p align="center">
+  <figure>
+    <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" style="width: 50%;"/>
+    <figcaption>UNet</figcaption>
+  </figure>
+  <figure>
+    <img src="https://github.com/atikul-islam-sajib/BT-Seg/blob/main/research/files/attentionUNet-output/train_masks.gif" alt="Second GIF description" style="width: 50%;"/>
+    <figcaption>AttentionUNet</figcaption>
+  </figure>
+</p>
 
 ## Getting Started
 
@@ -261,10 +270,10 @@ Visualize the test results and the loss curves by displaying the generated image
 from IPython.display import Image
 
 # Display the result image
-Image("/content/U-Net/outputs/test_images/result.png")
+Image("/content/BT-Seg/outputs/test_images/result.png")
 
 # Display the loss curve image
-Image("/content/U-Net/outputs/test_images/loss.png")
+Image("/content/BT-Seg/outputs/test_images/loss.png")
 ```
 
 ## Contributing
