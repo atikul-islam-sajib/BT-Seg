@@ -80,6 +80,12 @@ def cli():
         "--attentionUNet", type=bool, default=False, help="Attention UNet".capitalize()
     )
     parser.add_argument(
+        "--is_attentionUNet",
+        type=bool,
+        default=False,
+        help="Attention UNet".capitalize(),
+    )
+    parser.add_argument(
         "--display", type=bool, default=True, help="Display progress".capitalize()
     )
     parser.add_argument("--device", type=str, default="mps", help="Device".capitalize())
@@ -143,7 +149,7 @@ def cli():
         trainer.train()
 
     elif args.test:
-        charts = Charts(device="mps")
+        charts = Charts(device=args.device, is_attentionUNet=args.is_attentionUNet)
         charts.test()
 
 

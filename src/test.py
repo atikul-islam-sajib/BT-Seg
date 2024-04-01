@@ -15,6 +15,7 @@ from config import (
 )
 from utils import device_init, load
 from UNet import UNet
+from AttentionUNet import AttentionUNet
 
 
 class Charts:
@@ -56,7 +57,7 @@ class Charts:
     ```
     """
 
-    def __init__(self, device="mps"):
+    def __init__(self, device="mps", is_attentionUNet=None):
         """
         Initializes the Charts object.
 
@@ -65,6 +66,7 @@ class Charts:
         | device    | str  | "mps"   | The device on which to perform computations.  |
         """
         self.device = device_init(device=device)
+        self.is_attentionUNet = is_attentionUNet
 
     def select_best_model(self):
         """
@@ -191,7 +193,11 @@ class Charts:
         |-----------|
         | Exception | If there is an exception during the test phase.               |
         """
-        self.model = UNet().to(self.device)
+        if self.is_attentionUNet:
+            self.model = AttentionUNet().to(self.device)
+        else:
+            self.model = UNet().to(self.device)
+
         try:
             self.model.load_state_dict(self.select_best_model())
         except Exception as e:
