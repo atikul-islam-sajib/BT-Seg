@@ -1,10 +1,11 @@
 import sys
 import os
-import logging
 import argparse
 import imageio
 import matplotlib.pyplot as plt
 import torch
+
+sys.path.append("src/")
 
 from config import (
     BEST_MODEL_PATH,

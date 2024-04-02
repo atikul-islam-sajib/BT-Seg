@@ -1,9 +1,9 @@
 import sys
-import logging
 import argparse
 from collections import OrderedDict
-import torch
 import torch.nn as nn
+
+sys.path.append("src/")
 
 
 class Encoder(nn.Module):

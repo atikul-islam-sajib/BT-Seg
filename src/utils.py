@@ -1,7 +1,9 @@
-import os
+import sys
 import torch
 import torch.nn as nn
 import joblib
+
+sys.path.append("src/")
 
 
 def dump(value, filename):

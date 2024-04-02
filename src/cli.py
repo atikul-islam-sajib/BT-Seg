@@ -1,4 +1,8 @@
+import sys
 import argparse
+
+sys.path.append("src/")
+
 from dataloader import Loader
 from trainer import Trainer
 from test import Charts

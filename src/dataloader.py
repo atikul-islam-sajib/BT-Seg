@@ -1,3 +1,4 @@
+import sys
 import os
 import argparse
 import zipfile
@@ -8,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 
+sys.path.append("src/")
 
 from utils import dump, load
 from config import RAW_PATH, PROCESSED_PATH
