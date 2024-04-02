@@ -11,7 +11,7 @@ from torchvision import transforms
 
 sys.path.append("src/")
 
-from utils import dump, load
+from utils import dump, load, clean
 from config import RAW_PATH, PROCESSED_PATH
 
 
@@ -54,6 +54,11 @@ class Loader(Dataset):
         self.channels = 1
         self.images = list()
         self.masks = list()
+
+        try:
+            clean()
+        except Exception as e:
+            print("The exception is {}".format(e))
 
     def unzip_folder(self):
         """

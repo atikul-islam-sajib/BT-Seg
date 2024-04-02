@@ -1,9 +1,19 @@
 import sys
+import os
 import torch
 import torch.nn as nn
 import joblib
 
 sys.path.append("src/")
+
+from config import (
+    RAW_PATH,
+    PROCESSED_PATH,
+    TRAIN_CHECKPOINT_PATH,
+    BEST_MODEL_PATH,
+    TRAIN_IMAGES_PATH,
+    TEST_IMAGE_PATH,
+)
 
 
 def dump(value, filename):
@@ -98,3 +108,56 @@ def weight_init(m):
     elif classname.find("BatchNorm") != -1:
         nn.init.normal_(m.weight, 1.0, 0.02)
         nn.init.zeros_(m.bias)
+
+
+def clean():
+    """
+    Clean up the project directories by removing certain files and folders.
+
+    This function removes various files and folders to clean up the project directories.
+    It removes the following:
+    - All files in the 'segmented' folder within the RAW_PATH directory.
+    - All files in the PROCESSED_PATH directory.
+    - All files in the TRAIN_CHECKPOINT_PATH directory.
+    - All files in the BEST_MODEL_PATH directory.
+    - All files in the TRAIN_IMAGES_PATH directory.
+    - All files in the TEST_IMAGE_PATH directory.
+
+    Raises:
+        Exception: If any of the specified directories do not exist.
+    """
+    if os.path.exists(RAW_PATH):
+        image_folder = os.path.join(RAW_PATH, "segmented")
+        os.system(f"rm -rf {image_folder}")
+    else:
+        raise Exception("Raw data folder does not exist".capitalize())
+
+    if os.path.exists(PROCESSED_PATH):
+        for file in os.listdir(PROCESSED_PATH):
+            os.remove(os.path.join(PROCESSED_PATH, file))
+    else:
+        raise Exception("Processed data folder does not exist".capitalize())
+
+    if os.path.exists(TRAIN_CHECKPOINT_PATH):
+        for file in os.listdir(TRAIN_CHECKPOINT_PATH):
+            os.remove(os.path.join(TRAIN_CHECKPOINT_PATH, file))
+    else:
+        raise Exception("Training checkpoint folder does not exist".capitalize())
+
+    if os.path.exists(BEST_MODEL_PATH):
+        for file in os.listdir(BEST_MODEL_PATH):
+            os.remove(os.path.join(BEST_MODEL_PATH, file))
+    else:
+        raise Exception("Training checkpoint folder does not exist".capitalize())
+
+    if os.path.exists(TRAIN_IMAGES_PATH):
+        for file in os.listdir(TRAIN_IMAGES_PATH):
+            os.remove(os.path.join(TRAIN_IMAGES_PATH, file))
+    else:
+        raise Exception("Train images folder does not exist".capitalize())
+
+    if os.path.exists(TEST_IMAGE_PATH):
+        for file in os.listdir(TEST_IMAGE_PATH):
+            os.remove(os.path.join(TEST_IMAGE_PATH, file))
+    else:
+        raise Exception("Test images folder does not exist".capitalize())
