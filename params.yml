@@ -1,0 +1,20 @@
+data:
+  image_height: 256
+  image_width: 256
+  batch_size: 32
+  gray_channels: 1
+  transforms: 0.5
+  samples: 20
+  size: 30
+
+model:
+  epochs: 100
+  lr: 0.0001
+  beta1: 0.5
+  beat2: 0.999
+  steps: 50
+  device: mps
+  lambda: 0.01
+
+test:
+  samples: 20
