@@ -1,0 +1,7 @@
+torchaudio
+torchvision
+scikit-learn
+matplotlib
+seaborn
+pandas
+mkdocs
