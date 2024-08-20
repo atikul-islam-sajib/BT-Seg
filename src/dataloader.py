@@ -69,7 +69,7 @@ class Loader(Dataset):
         """
         if os.path.exists(RAW_PATH):
             with zipfile.ZipFile(self.image_path, "r") as zip_ref:
-                zip_ref.extractall(os.path.join(RAW_PATH, "segmented"))
+                zip_ref.extractall(os.path.join(RAW_PATH, ""))
         else:
             raise Exception("Raw data folder does not exist".capitalize())
 
@@ -132,12 +132,12 @@ class Loader(Dataset):
         Raises:
         - Exception: If the processed data folder does not exist.
         """
-        images = os.listdir(os.path.join(RAW_PATH, "segmented"))[0]
-        masks = os.listdir(os.path.join(RAW_PATH, "segmented"))[1]
+        # images = os.listdir(os.path.join(RAW_PATH, "segmented"))[0]
+        # masks = os.listdir(os.path.join(RAW_PATH, "segmented"))[1]
 
         try:
-            images = os.path.join(RAW_PATH, "segmented", images)
-            masks = os.path.join(RAW_PATH, "segmented", masks)
+            images = os.path.join(RAW_PATH, "segmented", "images")
+            masks = os.path.join(RAW_PATH, "segmented", "masks")
         except Exception as e:
             print(e)
 
